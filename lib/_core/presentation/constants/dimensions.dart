@@ -18,4 +18,6 @@ class AppTextSize {
   static double get mediumToLarge => 16.0.sp;
   static double get large => 18.0.sp;
   static double get xlarge => 20.0.sp;
+  static double get xxlarge => 24.0.sp;
+  static double get xxxlarge => 26.0.sp;
 }
