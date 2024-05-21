@@ -92,4 +92,10 @@ class TypographyStyles {
       fontWeight: FontWeight.w500,
       color: TextColors.grey600,
       height: 1.4);
+
+  static TextStyle get fieldText => TextStyle(
+      fontSize: AppTextSize.medium,
+      fontWeight: FontWeight.w400,
+      color: TextColors.grey700,
+      height: 1.4);
 }
