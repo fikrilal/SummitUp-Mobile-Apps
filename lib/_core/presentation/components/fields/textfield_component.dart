@@ -45,13 +45,14 @@ import '../../constants/colors.dart';
 ///   hintStyle: TextStyle(color: Colors.grey), // optional
 /// )
 
-class CustomTextField extends StatelessWidget {
+class TextFieldComponent extends StatelessWidget {
   final String hintText;
   final Widget? icon;
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final ValueChanged<String>? onSubmitted;
+  final FormFieldValidator<String>? validator;
   final FocusNode? focusNode;
   final bool isObscure;
   final Color? fillColor;
@@ -63,7 +64,7 @@ class CustomTextField extends StatelessWidget {
   final double borderRadius;
   final int maxLines;
 
-  const CustomTextField({
+  const TextFieldComponent({
     super.key,
     required this.hintText,
     this.icon,
@@ -71,6 +72,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
     this.onSubmitted,
+    this.validator,
     this.focusNode,
     this.isObscure = false,
     this.fillColor,
@@ -85,13 +87,14 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      onSubmitted: onSubmitted,
+      onFieldSubmitted: onSubmitted,
       focusNode: focusNode,
       obscureText: isObscure,
+      validator: validator ?? _defaultValidator,
       style: textStyle ?? TypographyStyles.fieldText,
       maxLines: maxLines,
       decoration: InputDecoration(
@@ -133,5 +136,13 @@ class CustomTextField extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
       ),
     );
+  }
+
+  String? _defaultValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field cannot be empty';
+    }
+    // Additional validation can be added here
+    return null;
   }
 }
