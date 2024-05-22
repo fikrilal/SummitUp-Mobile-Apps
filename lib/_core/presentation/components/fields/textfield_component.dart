@@ -112,14 +112,14 @@ class TextFieldComponent extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
-            color: borderColor ?? TextColors.grey300,
+            color: borderColor ?? BrandColors.brandPrimary200,
             width: borderWidth!,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
-            color: borderColor ?? TextColors.grey300,
+            color: borderColor ?? BrandColors.brandPrimary200,
             width: borderWidth!,
           ),
         ),
@@ -131,7 +131,7 @@ class TextFieldComponent extends StatelessWidget {
           ),
         ),
         filled: true,
-        fillColor: fillColor ?? Colors.white,
+        fillColor: fillColor ?? BrandColors.brandPrimary50.withOpacity(0.2),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
       ),
