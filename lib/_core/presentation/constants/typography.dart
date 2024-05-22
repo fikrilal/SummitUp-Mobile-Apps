@@ -17,7 +17,7 @@ class TypographyStyles {
       fontSize: AppTextSize.xxlarge,
       fontWeight: FontWeight.w700,
       color: TextColors.grey800,
-      height: 1);
+      height: 1.4);
 
   static TextStyle get headlineSmall => TextStyle(
       fontFamily: fontFamily,
