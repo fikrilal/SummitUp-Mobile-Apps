@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:summitup_mobile_apps/auth/presentation/email_verification_screen.dart';
 import 'package:summitup_mobile_apps/auth/presentation/register_screen.dart';
+import 'package:summitup_mobile_apps/auth/presentation/register_success.dart';
+import 'package:summitup_mobile_apps/jelajah/presentation/mountain_details_screen.dart';
 
 import 'auth/presentation/login_screen.dart';
 
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       designSize: Size(360, 800),
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
-          home: LoginScreen(),
+          home: MountainDetailsScreen(),
         );
       },
     );

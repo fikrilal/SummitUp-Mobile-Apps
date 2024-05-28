@@ -31,7 +31,7 @@ class BrandColors {
 
 class AppColors {
   static const successColor = Color(0xFF219653);
-  static const warningColor = Color(0xFFEB5757);
-  static const errorColor = Color(0xFFF2994A);
+  static const warningColor = Color(0xFFF2994A);
+  static const errorColor = Color(0xFFEB5757);
   static const linkColor = Color(0xFF2F80ED);
 }
