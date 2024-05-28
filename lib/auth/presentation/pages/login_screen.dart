@@ -4,8 +4,8 @@ import 'package:summitup_mobile_apps/_core/presentation/components/buttons/butto
 import 'package:summitup_mobile_apps/_core/presentation/components/fields/textfield_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 
-import '../../_core/presentation/components/icons/icons_library.dart';
-import '../../_core/presentation/constants/colors.dart';
+import '../../../_core/presentation/components/icons/icons_library.dart';
+import '../../../_core/presentation/constants/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

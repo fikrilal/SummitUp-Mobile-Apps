@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:summitup_mobile_apps/auth/presentation/email_verification_screen.dart';
-import 'package:summitup_mobile_apps/auth/presentation/register_screen.dart';
-import 'package:summitup_mobile_apps/auth/presentation/register_success.dart';
-import 'package:summitup_mobile_apps/jelajah/presentation/mountain_details_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_list_screen.dart';
+import 'discover/presentation/pages/mountain_details_screen.dart';
 
-import 'auth/presentation/login_screen.dart';
-
-void main() => runApp(const MyApp());
+Future main() async {
+  await dotenv.load(); // Load environment variables
+  runApp(const ProviderScope(child: MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(360, 800),
+      designSize: const Size(360, 800),
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
-          home: MountainDetailsScreen(),
+          home: MountainListScreen(),
         );
       },
     );

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 
-import '../../_core/presentation/components/appbar/appbar_component.dart';
-import '../../_core/presentation/components/fields/pinfields/pincodefield_component.dart';
+import '../../../_core/presentation/components/appbar/appbar_component.dart';
+import '../../../_core/presentation/components/fields/pinfields/pincodefield_component.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/fields/textfield_component.dart';
-import '../../_core/presentation/components/icons/icons_library.dart';
-import '../../_core/presentation/components/texts/component_text.dart';
-import '../../_core/presentation/constants/colors.dart';
+import '../../../_core/presentation/components/icons/icons_library.dart';
+import '../../../_core/presentation/components/texts/component_text.dart';
+import '../../../_core/presentation/constants/colors.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
