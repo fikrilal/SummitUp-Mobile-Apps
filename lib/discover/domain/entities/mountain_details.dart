@@ -1,12 +1,12 @@
-class Mountain {
+class MountainDetail {
   final int id;
   final String name;
   final String location;
-  final String elevation;
+  final int elevation;
   final String description;
   final String imageUrl;
 
-  Mountain({
+  MountainDetail({
     required this.id,
     required this.name,
     required this.location,
@@ -15,8 +15,8 @@ class Mountain {
     required this.imageUrl,
   });
 
-  factory Mountain.fromJson(Map<String, dynamic> json) {
-    return Mountain(
+  factory MountainDetail.fromJson(Map<String, dynamic> json) {
+    return MountainDetail(
       id: json['id'],
       name: json['name'],
       location: json['location'],

@@ -1,4 +1,4 @@
-import '../../../_core/data/data_sources/api_services.dart';
+import 'package:summitup_mobile_apps/discover/data/data_sources/mountains_api_service.dart';
 import '../../domain/entities/mountain.dart';
 
 abstract class MountainRepository {
@@ -6,13 +6,13 @@ abstract class MountainRepository {
 }
 
 class MountainRepositoryImpl implements MountainRepository {
-  final ApiService apiService;
+  final MountainsApiService mountainsApiService;
 
-  MountainRepositoryImpl(this.apiService);
+  MountainRepositoryImpl(this.mountainsApiService);
 
   @override
   Future<List<Mountain>> getMountains() async {
-    final mountainsData = await apiService.fetchMountains();
+    final mountainsData = await mountainsApiService.fetchMountains();
     return mountainsData.map<Mountain>((json) => Mountain.fromJson(json)).toList();
   }
 }
