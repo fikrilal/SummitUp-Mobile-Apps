@@ -1,18 +1,18 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
+import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_details_screen.dart';
+import '../components/mountain_card.dart';
+import '../providers/mountain_providers.dart';
 
-class MountainListScreen extends StatefulWidget {
+class MountainListScreen extends ConsumerWidget {
   const MountainListScreen({super.key});
 
   @override
-  State<MountainListScreen> createState() => _MountainListScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mountainListAsyncValue = ref.watch(mountainsProvider);
 
-class _MountainListScreenState extends State<MountainListScreen> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -23,22 +23,39 @@ class _MountainListScreenState extends State<MountainListScreen> {
               children: [
                 TextComponent.titleLarge("Semua List Gunung"),
                 SizedBox(height: 2.h),
-                TextComponent.bodySmall("List gunung s buat kamu"),
-                Card(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 16 / 9, // Atur rasio aspek sesuai kebutuhan Anda
-                        child: CachedNetworkImage(
-                          imageUrl: 'https://picsum.photos/2000',
-                          placeholder: (context, url) => CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                          fit: BoxFit.cover, // Atur pemadanan objek ke area yang diberikan
-                        ),
-                      ),
-                    ],
-                  ),
+                TextComponent.bodySmall("List gunung terlengkap buat kamu"),
+                mountainListAsyncValue.when(
+                  data: (mountains) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      // Disable scrolling of the ListView
+                      shrinkWrap: true,
+                      // Allow ListView to occupy only the space it needs
+                      itemCount: mountains.length,
+                      itemBuilder: (context, index) {
+                        final mountain = mountains[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MountainDetailsScreen(mountainId: mountain.id),
+                              ),
+                            );
+                          },
+                          child: MountainCard(
+                            title: mountain.name,
+                            imageUrl: mountain.imageUrl,
+                            location: mountain.location,
+                            elevation: "${mountain.elevation} mdpl",
+                            rating:
+                                "4.6 (120)", // Assume rating, modify as needed
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stack) => Text('Error: $error'),
                 ),
               ],
             ),
