@@ -23,82 +23,91 @@ class MountainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 0,
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.w),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 32,
-                  offset: const Offset(0, 4),
-                  spreadRadius: -1)
-            ]),
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.w),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
-                ),
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: TextColors.grey100,
+          width: 1,
+        ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0F000000),
+              blurRadius: 40,
+              offset: Offset(0, 4),
+              spreadRadius: -30,
+            )
+          ]),
+      padding: EdgeInsets.all(12.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.w),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 10.h),
-            TextComponent.titleLarge(title),
-            SizedBox(height: 8.h),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/location_icon.svg',
-                  width: 16.w,
-                  height: 16.h,
-                  color: TextColors.grey500,
-                ),
-                SizedBox(width: 8.w),
-                TextComponent.bodySmall(location)
-              ],
-            ),
-            SizedBox(height: 8.h),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/icon_flag.svg',
-                  width: 16.w,
-                  height: 16.h,
-                  color: TextColors.grey500,
-                ),
-                SizedBox(width: 8.w),
-                TextComponent.bodySmall(elevation),
-                SizedBox(width: 12.w),
-                Container(
-                  height: 12.h,
-                  width: 1.w,
-                  color: TextColors.grey200,
-                ),
-                SizedBox(width: 12.w),
-                SvgPicture.asset(
-                  'assets/icons/icon_star.svg',
-                  width: 16.w,
-                  height: 16.h,
-                  color: TextColors.grey500,
-                ),
-                SizedBox(width: 8.w),
-                TextComponent.bodySmall(rating),
-              ],
-            ),
-          ],
-        ),
+          ),
+          SizedBox(height: 10.h),
+          TextComponent.titleLarge(title),
+          SizedBox(height: 8.h),
+          Row(
+            children: [
+              SvgPicture.asset(
+                'assets/icons/location_icon.svg',
+                width: 16.w,
+                height: 16.h,
+                color: TextColors.grey500,
+              ),
+              SizedBox(width: 8.w),
+              TextComponent.bodySmall(location)
+            ],
+          ),
+          SizedBox(height: 8.h),
+          Row(
+            children: [
+              SvgPicture.asset(
+                'assets/icons/icon_flag.svg',
+                width: 16.w,
+                height: 16.h,
+                color: TextColors.grey500,
+              ),
+              SizedBox(width: 8.w),
+              TextComponent.bodySmall(elevation),
+              SizedBox(width: 12.w),
+              Container(
+                height: 12.h,
+                width: 1.w,
+                color: TextColors.grey200,
+              ),
+              SizedBox(width: 12.w),
+              SvgPicture.asset(
+                'assets/icons/icon_star.svg',
+                width: 16.w,
+                height: 16.h,
+                color: TextColors.grey500,
+              ),
+              SizedBox(width: 8.w),
+              TextComponent.bodySmall(rating),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
+// boxShadow: const [
+// BoxShadow(
+// color: Color(0x0F000000),
+// blurRadius: 32,
+// offset: Offset(0, 4),
+// spreadRadius: -1,
+// )
+// ]
