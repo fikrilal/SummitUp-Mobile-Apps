@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 
@@ -11,6 +12,7 @@ class TripCard extends StatelessWidget {
   final String duration;
   final String rating;
   final String price;
+  final bool isLoading;
 
   const TripCard({
     super.key,
@@ -19,11 +21,76 @@ class TripCard extends StatelessWidget {
     required this.duration,
     required this.rating,
     required this.price,
+    this.isLoading = false,
   });
+
+  factory TripCard.loading() {
+    return const TripCard(
+      title: '',
+      imageUrl: '',
+      duration: '',
+      rating: '',
+      price: '',
+      isLoading: true,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    if (isLoading) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.w),
+          border: Border.all(
+            color: TextColors.grey100,
+            width: 1,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0F000000),
+              blurRadius: 40,
+              offset: Offset(0, 4),
+              spreadRadius: -30,
+            )
+          ],
+        ),
+        padding: EdgeInsets.all(12.w),
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 220.w,
+                height: 180.w,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Container(width: 180.w, height: 20.h, color: Colors.white),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(width: 100.w, height: 16.h, color: Colors.white),
+                  SizedBox(width: 12.w),
+                  Container(width: 50.w, height: 16.h, color: Colors.white),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Container(width: 60.w, height: 20.h, color: Colors.white),
+            ],
+          ),
+        ),
+      );
+    } return Container(
+      width: 250.w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10.w),
@@ -49,7 +116,7 @@ class TripCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             child: CachedNetworkImage(
               imageUrl: imageUrl,
-              width: 220.w,
+              width: double.infinity,
               height: 180.w,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(

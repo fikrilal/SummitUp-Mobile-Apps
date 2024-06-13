@@ -7,7 +7,9 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 import 'package:summitup_mobile_apps/discover/presentation/components/trip_card.dart';
-import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_detail_providers.dart'; // make sure this is the correct path
+import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_detail_providers.dart';
+
+import '../providers/trip_by_mountain_providers.dart'; // make sure this is the correct path
 
 class MountainDetailsScreen extends ConsumerWidget {
   final int mountainId;
@@ -18,29 +20,8 @@ class MountainDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mountainDetailAsyncValue =
         ref.watch(mountainDetailProvider(mountainId));
-    final List<Map<String, dynamic>> trips = [
-      {
-        "title": "Trip Bromo Platinum Class",
-        "imageUrl": "https://picsum.photos/2000",
-        "duration": "3 Hari",
-        "rating": "4.8",
-        "price": "Rp 450.000",
-      },
-      {
-        "title": "Trip Semeru Adventure",
-        "imageUrl": "https://picsum.photos/2000",
-        "duration": "5 Hari",
-        "rating": "4.5",
-        "price": "Rp 650.000",
-      },
-      {
-        "title": "Trip Merapi Base Camp",
-        "imageUrl": "https://picsum.photos/2000",
-        "duration": "2 Hari",
-        "rating": "4.9",
-        "price": "Rp 300.000",
-      },
-    ];
+    final tripsAsyncValue = ref.watch(tripsProvider(mountainId));
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -169,20 +150,34 @@ class MountainDetailsScreen extends ConsumerWidget {
                       ],
                     ),
                     SizedBox(height: 16.h),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: trips.map((trip) => Padding(
-                          padding: EdgeInsets.only(right: 12.w),
-                          child: TripCard(
-                            title: trip["title"],
-                            imageUrl: trip["imageUrl"],
-                            duration: trip["duration"],
-                            rating: trip["rating"],
-                            price: trip["price"],
+                    tripsAsyncValue.when(
+                      data: (trips) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: trips.map((trip) => Padding(
+                              padding: EdgeInsets.only(right: 12.w),
+                              child: TripCard(
+                                title: trip.tripName,
+                                imageUrl: trip.imageUrl,
+                                duration: "${trip.duration} Hari",
+                                rating: trip.averageRating.toStringAsFixed(1),
+                                price: "Rp ${trip.price}",
+                              ),
+                            )).toList(),
                           ),
-                        )).toList(),
+                        );
+                      },
+                      loading: () => SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(3, (index) => Padding(
+                            padding: EdgeInsets.only(right: 12.w),
+                            child: TripCard.loading(),
+                          )),
+                        ),
                       ),
+                      error: (error, _) => Text('Failed to load trips: $error'),
                     ),
                   ],
                 ),

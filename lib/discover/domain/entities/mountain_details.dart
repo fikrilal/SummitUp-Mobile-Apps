@@ -18,7 +18,7 @@ class MountainDetail {
   factory MountainDetail.fromJson(Map<String, dynamic> json) {
     return MountainDetail(
       id: json['id'],
-      name: json['name'],
+      name: json['mountain_name'],
       location: json['location'],
       elevation: json['elevation'],
       description: json['description'],
