@@ -45,7 +45,7 @@ class ButtonComponent extends StatelessWidget {
     this.icon,
     this.customIcon,
     this.buttonType = ButtonType.primary,
-    this.borderRadius = 100.0,
+    this.borderRadius = 10.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
   });
 
