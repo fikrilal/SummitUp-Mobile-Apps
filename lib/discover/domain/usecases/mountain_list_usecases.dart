@@ -1,5 +1,5 @@
-import '../../data/repositories/mountain_repository.dart';
-import '../entities/mountain.dart';
+import '../../data/repositories/mountain_list_repository.dart';
+import '../entities/mountain_list_entities.dart';
 
 class GetMountains {
   final MountainRepository repository;

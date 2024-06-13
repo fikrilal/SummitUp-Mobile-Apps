@@ -1,4 +1,4 @@
-import '../../domain/entities/mountain_details.dart';
+import '../../domain/entities/mountain_details_entities.dart';
 import '../data_sources/mountain_details_api_service.dart';
 
 class MountainDetailRepository {

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:summitup_mobile_apps/discover/domain/entities/mountain_details.dart';
+import 'package:summitup_mobile_apps/discover/domain/entities/mountain_details_entities.dart';
 import '../../data/repositories/mountain_detail_repository.dart';
-import '../../domain/usecases/get_mountain_details.dart';
+import '../../domain/usecases/mountain_detail_usecases.dart';
 import 'api_services_provider.dart';
 
 // Provider for the repository

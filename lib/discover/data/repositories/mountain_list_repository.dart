@@ -1,5 +1,5 @@
-import 'package:summitup_mobile_apps/discover/data/data_sources/mountains_api_service.dart';
-import '../../domain/entities/mountain.dart';
+import 'package:summitup_mobile_apps/discover/data/data_sources/mountain_list_api_service.dart';
+import '../../domain/entities/mountain_list_entities.dart';
 
 abstract class MountainRepository {
   Future<List<Mountain>> getMountains();

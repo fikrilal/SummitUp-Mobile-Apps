@@ -6,7 +6,7 @@ import 'package:summitup_mobile_apps/_core/presentation/components/texts/compone
 import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_details_screen.dart';
 import '../components/explore_card.dart';
 import '../components/mountain_card.dart';
-import '../providers/mountain_providers.dart';
+import '../providers/mountain_list_providers.dart';
 import 'package:summitup_mobile_apps/discover/data/constants/island_list_cons.dart';
 
 class MountainListScreen extends ConsumerWidget {
