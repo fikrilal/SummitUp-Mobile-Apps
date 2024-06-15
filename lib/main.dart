@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:summitup_mobile_apps/_core/presentation/pages/main_screen.dart';
 import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_list_screen.dart';
 
 Future main() async {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 800),
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
-          home: MountainListScreen(),
+          home: MainScreen(),
         );
       },
     );

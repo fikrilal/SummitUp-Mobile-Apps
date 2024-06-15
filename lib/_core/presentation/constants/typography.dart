@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'colors.dart';
 import 'dimensions.dart';
 
@@ -116,4 +117,18 @@ class TypographyStyles {
       fontWeight: FontWeight.w400,
       color: TextColors.grey700,
       height: 1.4);
+
+  static TextStyle get navActive => TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w600,
+      color: TextColors.grey700,
+      height: 2);
+
+  static TextStyle get navInactive => TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      color: TextColors.grey400,
+      height: 2);
 }
