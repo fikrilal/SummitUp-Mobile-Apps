@@ -50,24 +50,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       leading: onBack != null
           ? IconButton(
-        icon: SvgPicture.asset(
-          'assets/icons/arrow_back.svg',
-          color: TextColors.grey500,
-          height: 24.0,
-          width: 24.0,
-        ),
-        onPressed: onBack,
-      )
+              icon: SvgPicture.asset(
+                'assets/icons/arrow_back.svg',
+                color: TextColors.grey500,
+                height: 24.0,
+                width: 24.0,
+              ),
+              onPressed: onBack,
+            )
           : null,
-      title: TextComponent.titleMedium(title),
+      title: TextComponent.titleMedium(title, fontWeight: FontWeight.w500),
       bottom: showBottomBorder
           ? PreferredSize(
-        preferredSize: const Size.fromHeight(1.0),
-        child: Container(
-          color: TextColors.grey200,
-          height: 1.0,
-        ),
-      )
+              preferredSize: const Size.fromHeight(1.0),
+              child: Container(
+                color: TextColors.grey200,
+                height: 1.0,
+              ),
+            )
           : null,
     );
   }
@@ -95,11 +95,11 @@ class AppBarPrimary extends CustomAppBar {
     Color? backgroundColor,
     double? elevation,
   }) : super(
-      title: title,
-      onBack: onBack,
-      backgroundColor: backgroundColor,
-      elevation: elevation,
-      showBottomBorder: false);
+            title: title,
+            onBack: onBack,
+            backgroundColor: backgroundColor,
+            elevation: elevation,
+            showBottomBorder: false);
 }
 
 /// AppBarSecondary is a variant of CustomAppBar that includes a thin line below the AppBar,
@@ -125,12 +125,12 @@ class AppBarSecondary extends CustomAppBar {
     Color? backgroundColor,
     double? elevation,
   }) : super(
-      title: title,
-      onBack: onBack,
-      backgroundColor: backgroundColor,
-      elevation: elevation,
-      showBottomBorder: true // Show the bottom border
-  );
+            title: title,
+            onBack: onBack,
+            backgroundColor: backgroundColor,
+            elevation: elevation,
+            showBottomBorder: true // Show the bottom border
+            );
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +139,9 @@ class AppBarSecondary extends CustomAppBar {
       elevation: elevation,
       leading: onBack != null
           ? IconButton(
-        icon: const Icon(Icons.arrow_back, color: TextColors.grey500),
-        onPressed: onBack,
-      )
+              icon: const Icon(Icons.arrow_back, color: TextColors.grey500),
+              onPressed: onBack,
+            )
           : null,
       title: TextComponent.bodyMedium(title),
       // Use body text style for the title

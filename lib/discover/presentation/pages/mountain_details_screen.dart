@@ -4,12 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 import 'package:summitup_mobile_apps/discover/presentation/components/trip_card.dart';
+import 'package:summitup_mobile_apps/discover/presentation/pages/trip_details_screen.dart';
 import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_detail_providers.dart';
 
-import '../providers/trip_by_mountain_providers.dart'; // make sure this is the correct path
+import '../providers/trip_by_mountain_providers.dart';
 
 class MountainDetailsScreen extends ConsumerWidget {
   final int mountainId;
@@ -23,9 +25,12 @@ class MountainDetailsScreen extends ConsumerWidget {
     final tripsAsyncValue = ref.watch(tripsProvider(mountainId));
 
     return Scaffold(
+      appBar: const CustomAppBar(
+        title: "Detail Gunung",
+      ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
+          padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w, bottom: 16.h),
           child: mountainDetailAsyncValue.when(
             data: (mountainDetail) {
               return SingleChildScrollView(
@@ -155,28 +160,35 @@ class MountainDetailsScreen extends ConsumerWidget {
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: trips.map((trip) => Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: TripCard(
-                                title: trip.tripName,
-                                imageUrl: trip.imageUrl,
-                                duration: "${trip.duration} Hari",
-                                rating: trip.averageRating.toStringAsFixed(1),
-                                price: "Rp ${trip.price}",
-                              ),
-                            )).toList(),
+                            children: trips
+                                .map((trip) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                TripDetailsScreen(
+                                                    tripId: trip.tripId),
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 12.w),
+                                        child: TripCard(
+                                          title: trip.tripName,
+                                          imageUrl: trip.imageUrl,
+                                          duration: "${trip.duration} Hari",
+                                          rating: trip.averageRating
+                                              .toStringAsFixed(1),
+                                          price: "Rp ${trip.price}",
+                                          tripId: trip.tripId,
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
                           ),
                         );
                       },
-                      loading: () => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(3, (index) => Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: TripCard.loading(),
-                          )),
-                        ),
-                      ),
+                      loading: () => CircularProgressIndicator(),
                       error: (error, _) => Text('Failed to load trips: $error'),
                     ),
                   ],

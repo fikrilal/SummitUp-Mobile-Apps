@@ -2,17 +2,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/dashboard/presentation/components/quick_access_card.dart';
 
 import '../../../discover/presentation/components/mountain_card.dart';
 import '../../../discover/presentation/components/trip_card.dart';
 import '../../../discover/presentation/pages/mountain_details_screen.dart';
+import '../../../discover/presentation/pages/trip_details_screen.dart';
 import '../../../discover/presentation/providers/mountain_list_providers.dart';
 import '../../../discover/presentation/providers/trip_by_mountain_providers.dart';
 
 class HomepageScreen extends ConsumerWidget {
   HomepageScreen({super.key});
+
   final List<String> imgList = [
     'https://picsum.photos/2000',
     'https://picsum.photos/2001',
@@ -73,7 +76,8 @@ class HomepageScreen extends ConsumerWidget {
                     .toList(),
               ),
               Padding(
-                padding: EdgeInsets.all(16.w),
+                padding: EdgeInsets.only(
+                    top: 16.h, bottom: 4.h, left: 16.w, right: 16.w),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -117,44 +121,91 @@ class HomepageScreen extends ConsumerWidget {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.only(
+                    top: 4.h, bottom: 16.h, left: 16.w, right: 16.w),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: QuickAccessCard(
+                      iconPath: 'assets/icons/access_icons/q_tiket_icon.svg',
+                      label: 'Tiket',
+                      onTap: () {
+                        // Handle Open Trip Tap
+                      },
+                    )),
+                    SizedBox(width: 6.w),
+                    Expanded(
+                        child: QuickAccessCard(
+                      iconPath: 'assets/icons/access_icons/q_homestay_icon.svg',
+                      label: 'Homestay',
+                      onTap: () {
+                        // Handle Event Tap
+                      },
+                    )),
+                    SizedBox(width: 6.w),
+                    Expanded(
+                        child: QuickAccessCard(
+                      iconPath: 'assets/icons/access_icons/q_ojek_icon.svg',
+                      label: 'Ojek',
+                      onTap: () {
+                        // Handle Porter Tap
+                      },
+                    )),
+                    SizedBox(width: 6.w),
+                    Expanded(
+                        child: QuickAccessCard(
+                      iconPath:
+                          'assets/icons/access_icons/q_camp_ground_icon.svg',
+                      label: 'Camp Ground',
+                      onTap: () {
+                        // Handle Sewa Alat Tap
+                      },
+                    )),
+                  ],
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextComponent.titleLarge("Semua List Gunung"),
+                    TextComponent.titleLarge("Rekomendasi Trip"),
                     SizedBox(height: 2.h),
-                    TextComponent.bodySmall("List gunung terlengkap buat kamu"),
+                    TextComponent.bodySmall(
+                        "Trip asik yang paling sering dibooking"),
                     SizedBox(height: 16.h),
-                    tripsAsyncValue.when(
-                      data: (trips) {
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: trips.map((trip) => Padding(
-                              padding: EdgeInsets.only(right: 12.w),
-                              child: TripCard(
-                                title: trip.tripName,
-                                imageUrl: trip.imageUrl,
-                                duration: "${trip.duration} Hari",
-                                rating: trip.averageRating.toStringAsFixed(1),
-                                price: "Rp ${trip.price}",
+                tripsAsyncValue.when(
+                  data: (trips) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: trips.map((trip) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TripDetailsScreen(tripId: trip.tripId),
                               ),
-                            )).toList(),
-                          ),
-                        );
-                      },
-                      loading: () => SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(3, (index) => Padding(
+                            );
+                          },
+                          child: Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: TripCard.loading(),
-                          )),
-                        ),
+                            child: TripCard(
+                              title: trip.tripName,
+                              imageUrl: trip.imageUrl,
+                              duration: "${trip.duration} Hari",
+                              rating: trip.averageRating.toStringAsFixed(1),
+                              price: "Rp ${trip.price}",
+                              tripId: trip.tripId,
+                            ),
+                          ),
+                        )).toList(),
                       ),
-                      error: (error, _) => Text('Failed to load trips: $error'),
-                    ),
-                  ],
+                    );
+                  },
+                  loading: () => CircularProgressIndicator(),
+                  error: (error, _) => Text('Failed to load trips: $error'),
+                ),
+                ],
                 ),
               ),
               Padding(
@@ -191,7 +242,7 @@ class HomepageScreen extends ConsumerWidget {
                                     location: mountain.location,
                                     elevation: "${mountain.elevation} mdpl",
                                     rating:
-                                    "4.6 (120)", // Assume rating, modify as needed
+                                        "4.6 (120)", // Assume rating, modify as needed
                                   ),
                                   SizedBox(height: 10.h),
                                 ],

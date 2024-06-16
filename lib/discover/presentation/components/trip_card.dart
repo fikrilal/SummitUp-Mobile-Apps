@@ -13,6 +13,7 @@ class TripCard extends StatelessWidget {
   final String rating;
   final String price;
   final bool isLoading;
+  final int tripId;
 
   const TripCard({
     super.key,
@@ -22,19 +23,20 @@ class TripCard extends StatelessWidget {
     required this.rating,
     required this.price,
     this.isLoading = false,
+    required this.tripId,
   });
 
   factory TripCard.loading() {
-    return const TripCard(
+    return TripCard(
       title: '',
       imageUrl: '',
       duration: '',
       rating: '',
       price: '',
       isLoading: true,
+      tripId: 0,
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
