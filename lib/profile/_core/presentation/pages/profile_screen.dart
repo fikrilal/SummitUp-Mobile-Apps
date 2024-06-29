@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
-import 'package:summitup_mobile_apps/profile/presentation/components/profile_image_component.dart';
-import 'package:summitup_mobile_apps/profile/presentation/pages/change_password_screen.dart';
+import 'package:summitup_mobile_apps/profile/_core/presentation/components/profile_image_component.dart';
+import 'package:summitup_mobile_apps/profile/change_password/presentation/pages/change_password_screen.dart';
+import 'package:summitup_mobile_apps/profile/favorite/presentation/pages/favorite_screen.dart';
+import 'package:summitup_mobile_apps/profile/history/presentation/pages/trip_history_screen.dart';
 import '../components/profile_row_setting.dart';
-import 'edit_profile_screen.dart';
+import '../../../edit_profile/presentation/pages/edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -66,14 +68,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   iconPath: 'assets/icons/favourite_icon.svg',
                   text: "Favorite",
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FavoriteScreen(),
+                      ),
+                    );
                   },
                 ),
                 ProfileSettingRow(
                   iconPath: 'assets/icons/history_icon.svg',
                   text: "Riwayat Trip",
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TripHistoryScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

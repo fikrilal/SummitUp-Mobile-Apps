@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../_core/presentation/components/texts/component_text.dart';
-import '../../../_core/presentation/constants/colors.dart';
+import '../../../../_core/presentation/components/texts/component_text.dart';
+import '../../../../_core/presentation/constants/colors.dart';
 
 class ProfileSettingRow extends StatelessWidget {
   final String iconPath;

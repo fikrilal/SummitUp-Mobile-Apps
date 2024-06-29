@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../_core/presentation/components/texts/component_text.dart';
-import '../../../_core/presentation/constants/colors.dart';
+import '../../../../_core/presentation/components/texts/component_text.dart';
+import '../../../../_core/presentation/constants/colors.dart';
 
 class ProfileImageComponent extends StatelessWidget {
   final String imageUrl;

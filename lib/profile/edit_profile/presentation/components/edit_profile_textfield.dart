@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../_core/presentation/constants/colors.dart';
-import '../../../_core/presentation/constants/dimensions.dart';
-import '../../../_core/presentation/constants/typography.dart';
+import '../../../../_core/presentation/constants/colors.dart';
+import '../../../../_core/presentation/constants/dimensions.dart';
+import '../../../../_core/presentation/constants/typography.dart';
 
 class EditProfileTextField extends StatelessWidget {
   final String label;

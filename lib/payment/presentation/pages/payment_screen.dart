@@ -54,12 +54,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                           Row(
                             children: [
-                              SvgPicture.asset('assets/icons/location_icon.svg',
+                              SvgPicture.asset('assets/icons/group_bold_icon.svg',
                                   width: 16.w,
                                   height: 16.h,
                                   color: AppColors.linkColor),
                               SizedBox(width: 8.w),
-                              TextComponent.bodyMedium("10 Orang")
+                              TextComponent.bodySmall("10 Orang")
                             ],
                           ),
                         ],

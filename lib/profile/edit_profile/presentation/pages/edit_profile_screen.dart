@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
-import '../../../_core/presentation/components/texts/component_text.dart';
-import '../../../payment/presentation/components/edit_profile_button.dart';
-import '../../../payment/presentation/components/edit_profile_textfield.dart';
-import '../../../payment/presentation/components/gender_radio_button.dart';
-import '../components/profile_image_component.dart';
+import '../../../../_core/presentation/components/texts/component_text.dart';
+import '../components/edit_profile_button.dart';
+import '../components/edit_profile_textfield.dart';
+import '../../../_core/presentation/components/profile_image_component.dart';
+import '../components/gender_radio_button.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

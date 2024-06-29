@@ -6,7 +6,7 @@ import 'package:summitup_mobile_apps/_core/presentation/constants/typography.dar
 import 'package:summitup_mobile_apps/dashboard/presentation/pages/homepage_screen.dart';
 import 'package:summitup_mobile_apps/discount/presentation/discount_screen.dart';
 import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_list_screen.dart';
-import 'package:summitup_mobile_apps/profile/presentation/pages/profile_screen.dart';
+import 'package:summitup_mobile_apps/profile/_core/presentation/pages/profile_screen.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../providers/global_providers.dart';
