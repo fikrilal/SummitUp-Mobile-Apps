@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/profile/presentation/components/profile_image_component.dart';
+import 'package:summitup_mobile_apps/profile/presentation/pages/change_password_screen.dart';
 import '../components/profile_row_setting.dart';
 import 'edit_profile_screen.dart';
 
@@ -53,7 +54,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   iconPath: 'assets/icons/password_icon.svg',
                   text: "Kata Sandi",
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangePasswordScreen(),
+                      ),
+                    );
                   },
                 ),
                 ProfileSettingRow(
