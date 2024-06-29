@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/image/cached_image_component.dart';
 
 import '../../../_core/presentation/components/appbar/appbar_component.dart';
@@ -82,6 +83,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ppn: "Rp10.000",
                   totalPembayaran: "Rp410.000",
                 ),
+                SizedBox(height: 24.h),
+                ButtonComponent(
+                  text: "Bayar Sekarang",
+                  onPressed: () {},
+                )
               ],
             ),
           ),
