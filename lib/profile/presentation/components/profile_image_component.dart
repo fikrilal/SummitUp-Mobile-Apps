@@ -20,7 +20,7 @@ class ProfileImageComponent extends StatelessWidget {
       height: 140.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.green, width: 3.w),
+        border: Border.all(color: BrandColors.brandPrimary500, width: 3.w),
       ),
       child: ClipOval(
         child: CachedNetworkImage(

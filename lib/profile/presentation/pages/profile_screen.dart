@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/profile/presentation/components/profile_image_component.dart';
-
-import '../../../_core/presentation/constants/colors.dart';
 import '../components/profile_row_setting.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,7 +41,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   iconPath: 'assets/icons/profile_icon.svg',
                   text: "Profile",
                   onTap: () {
-                    // Handle tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditProfileScreen(),
+                      ),
+                    );
                   },
                 ),
                 ProfileSettingRow(
