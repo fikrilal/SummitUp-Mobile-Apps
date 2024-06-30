@@ -12,7 +12,7 @@ class EquipmentRentalCard extends StatelessWidget {
   final String rating;
   final String price;
   final bool isLoading;
-  final int tripId;
+  final int equipmentId;
 
   const EquipmentRentalCard({
     super.key,
@@ -21,7 +21,7 @@ class EquipmentRentalCard extends StatelessWidget {
     required this.rating,
     required this.price,
     this.isLoading = false,
-    required this.tripId,
+    required this.equipmentId,
   });
 
   factory EquipmentRentalCard.loading() {
@@ -31,7 +31,7 @@ class EquipmentRentalCard extends StatelessWidget {
       rating: '',
       price: '',
       isLoading: true,
-      tripId: 0,
+      equipmentId: 0,
     );
   }
 

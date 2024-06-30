@@ -12,6 +12,7 @@ import 'package:summitup_mobile_apps/discover/presentation/pages/trip_details_sc
 import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_detail_providers.dart';
 
 import '../components/equipment_rental_card.dart';
+import '../providers/equipment_by_mountain_providers.dart';
 import '../providers/trip_by_mountain_providers.dart';
 
 class MountainDetailsScreen extends ConsumerWidget {
@@ -24,6 +25,7 @@ class MountainDetailsScreen extends ConsumerWidget {
     final mountainDetailAsyncValue =
         ref.watch(mountainDetailProvider(mountainId));
     final tripsAsyncValue = ref.watch(tripsProvider(mountainId));
+    final equipmentsAsyncValue = ref.watch(equipmentsProvider(mountainId));
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -183,7 +185,6 @@ class MountainDetailsScreen extends ConsumerWidget {
                                               .toStringAsFixed(1),
                                           price: "Rp ${trip.price}",
                                           tripId: trip.tripId,
-                                          isLoading: true,
                                         ),
                                       ),
                                     ))
@@ -194,33 +195,35 @@ class MountainDetailsScreen extends ConsumerWidget {
                       loading: () => CircularProgressIndicator(),
                       error: (error, _) => Text('Failed to load trips: $error'),
                     ),
-                    SizedBox(height: 20.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextComponent.titleMedium("Sewa Alat"),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            TextComponent.labelSmall("Semua",
-                                color: AppColors.linkColor),
-                            SizedBox(width: 2.w),
-                            SvgPicture.asset(
-                                'assets/icons/arrow_right_icon.svg',
-                                color: AppColors.linkColor)
-                          ],
-                        )
-                      ],
-                    ),
                     SizedBox(height: 16.h),
-                    EquipmentRentalCard(
-                      title: "Tenda XL 3 Orang",
-                      imageUrl: "https://picsum.photos/1200",
-                      tripId: 1,
-                      price: "35.000",
-                      rating: "4.5",
-                      isLoading: true,
-                    )
+                    equipmentsAsyncValue.when(
+                      data: (equipments) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: equipments
+                                .map((equipment) => GestureDetector(
+                              onTap: () {
+                                // Handle onTap if needed
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 12.w),
+                                child: EquipmentRentalCard(
+                                  title: equipment.equipmentName,
+                                  imageUrl: "https://picsum.photos/1200",
+                                  price: "Rp ${equipment.pricePerDay}",
+                                  rating: "4.5", // Dummy rating
+                                  equipmentId: equipment.equipmentId,
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                          ),
+                        );
+                      },
+                      loading: () => CircularProgressIndicator(),
+                      error: (error, _) => Text('Failed to load equipments: $error'),
+                    ),
                   ],
                 ),
               );
