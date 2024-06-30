@@ -18,7 +18,7 @@ class TypographyStyles {
       fontSize: AppTextSize.xxlarge,
       fontWeight: FontWeight.w700,
       color: TextColors.grey800,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get headlineSmall => TextStyle(
       fontFamily: fontFamily,
@@ -32,91 +32,91 @@ class TypographyStyles {
       fontSize: AppTextSize.large,
       fontWeight: FontWeight.w700,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get titleMedium => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.mediumToLarge,
       fontWeight: FontWeight.w700,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get titleSmall => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w700,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get labelLarge => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.mediumToLarge,
       fontWeight: FontWeight.w600,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get labelMedium => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w600,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get labelSmall => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.small,
       fontWeight: FontWeight.w600,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get bodyLarge => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.mediumToLarge,
       fontWeight: FontWeight.w400,
       color: TextColors.grey500,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get bodyMedium => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w400,
       color: TextColors.grey500,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get bodySmall => TextStyle(
       fontFamily: fontFamily,
-      fontSize: AppTextSize.small,
+      fontSize: AppTextSize.xsmall,
       fontWeight: FontWeight.w400,
       color: TextColors.grey500,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get buttonPrimary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w800,
       color: Colors.white,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get buttonSecondary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w800,
       color: BrandColors.brandPrimary600,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get buttonTertiary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w500,
       color: TextColors.grey600,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get fieldText => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
       fontWeight: FontWeight.w400,
       color: TextColors.grey700,
-      height: 1.4);
+      height: 1);
 
   static TextStyle get navActive => TextStyle(
       fontFamily: fontFamily,

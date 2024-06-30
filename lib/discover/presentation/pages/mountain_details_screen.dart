@@ -11,6 +11,7 @@ import 'package:summitup_mobile_apps/discover/presentation/components/trip_card.
 import 'package:summitup_mobile_apps/discover/presentation/pages/trip_details_screen.dart';
 import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_detail_providers.dart';
 
+import '../components/equipment_rental_card.dart';
 import '../providers/trip_by_mountain_providers.dart';
 
 class MountainDetailsScreen extends ConsumerWidget {
@@ -30,7 +31,8 @@ class MountainDetailsScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w, bottom: 16.h),
+          padding:
+              EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w, bottom: 16.h),
           child: mountainDetailAsyncValue.when(
             data: (mountainDetail) {
               return SingleChildScrollView(
@@ -181,6 +183,7 @@ class MountainDetailsScreen extends ConsumerWidget {
                                               .toStringAsFixed(1),
                                           price: "Rp ${trip.price}",
                                           tripId: trip.tripId,
+                                          isLoading: true,
                                         ),
                                       ),
                                     ))
@@ -191,6 +194,33 @@ class MountainDetailsScreen extends ConsumerWidget {
                       loading: () => CircularProgressIndicator(),
                       error: (error, _) => Text('Failed to load trips: $error'),
                     ),
+                    SizedBox(height: 20.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextComponent.titleMedium("Sewa Alat"),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextComponent.labelSmall("Semua",
+                                color: AppColors.linkColor),
+                            SizedBox(width: 2.w),
+                            SvgPicture.asset(
+                                'assets/icons/arrow_right_icon.svg',
+                                color: AppColors.linkColor)
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 16.h),
+                    EquipmentRentalCard(
+                      title: "Tenda XL 3 Orang",
+                      imageUrl: "https://picsum.photos/1200",
+                      tripId: 1,
+                      price: "35.000",
+                      rating: "4.5",
+                      isLoading: true,
+                    )
                   ],
                 ),
               );
