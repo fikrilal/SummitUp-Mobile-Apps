@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/typography.dart';
 import 'package:summitup_mobile_apps/dashboard/presentation/pages/homepage_screen.dart';
-import 'package:summitup_mobile_apps/discount/presentation/discount_screen.dart';
+import 'package:summitup_mobile_apps/discount/presentation/pages/discount_screen.dart';
 import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_list_screen.dart';
 import 'package:summitup_mobile_apps/profile/_core/presentation/pages/profile_screen.dart';
 import 'package:flutter_svg/svg.dart';
