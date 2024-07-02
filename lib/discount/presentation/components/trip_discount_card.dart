@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
+import 'package:intl/intl.dart';
 import '../../../_core/presentation/constants/dimensions.dart';
 
 class TripDiscountCard extends StatelessWidget {
@@ -48,82 +49,12 @@ class TripDiscountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.w),
-          border: Border.all(
-            color: BrandColors.brandPrimary100,
-            width: 1,
-          ),
-        ),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.w),
-                  topRight: Radius.circular(10.w),
-                ),
-                child: Container(
-                  width: double.infinity,
-                  height: 180.w,
-                  color: Colors.white,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      width: 150.w,
-                      height: 16.h,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      width: double.infinity,
-                      height: 16.h,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    Container(
-                      width: double.infinity,
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      return _buildLoading();
     }
+
+    final formattedPrice = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(double.parse(price));
+    final formattedDiscountPrice = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(double.parse(discountPrice));
+    final formattedRating = double.parse(rating).toStringAsFixed(1);
 
     return Container(
       decoration: BoxDecoration(
@@ -199,7 +130,7 @@ class TripDiscountCard extends StatelessWidget {
                       color: TextColors.grey500,
                     ),
                     SizedBox(width: 8.w),
-                    TextComponent.bodySmall(rating),
+                    TextComponent.bodySmall(formattedRating),
                   ],
                 ),
                 SizedBox(height: 12.h),
@@ -209,14 +140,14 @@ class TripDiscountCard extends StatelessWidget {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        TextComponent.titleMedium(price,
+                        TextComponent.titleMedium(formattedPrice,
                             fontWeight: FontWeight.w600,
                             color: BrandColors.brandPrimary500),
                         TextComponent.bodySmall("/orang"),
                       ],
                     ),
                     Text(
-                      discountPrice,
+                      formattedDiscountPrice,
                       style: TextStyle(
                         fontFamily: 'DMSans',
                         fontSize: AppTextSize.xsmall,
@@ -234,6 +165,84 @@ class TripDiscountCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLoading() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: BrandColors.brandPrimary100,
+          width: 1,
+        ),
+      ),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.w),
+                topRight: Radius.circular(10.w),
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 180.w,
+                color: Colors.white,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    width: 150.w,
+                    height: 16.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Container(
+                    width: double.infinity,
+                    height: 16.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Container(
+                    width: double.infinity,
+                    height: 20.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

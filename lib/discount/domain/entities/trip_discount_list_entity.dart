@@ -33,13 +33,13 @@ class DiscountTrip {
       mountainId: json['mountain_id'],
       tripName: json['trip_name'],
       description: json['description'],
-      price: json['price'],
-      discountPrice: json['discount_price'],
+      price: (json['price'] as num).toDouble(), // Cast to double
+      discountPrice: (json['discount_price'] as num).toDouble(), // Cast to double
       duration: json['duration'],
       startDate: json['start_date'],
       endDate: json['end_date'],
       imageUrl: json['image_url'],
-      averageRating: json['average_rating'],
+      averageRating: (json['average_rating'] as num).toDouble(), // Cast to double
       totalReviews: json['total_reviews'],
     );
   }
