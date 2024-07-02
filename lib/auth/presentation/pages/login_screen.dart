@@ -1,35 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/fields/textfield_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
-
+import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 import '../../../_core/presentation/components/icons/icons_library.dart';
-import '../../../_core/presentation/constants/colors.dart';
+import '../providers/login_providers.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-final TextEditingController _usernameController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
-
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   String? emailValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';
     }
-    // String pattern =
-    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$';
-    // RegExp regex = RegExp(pattern);
-    // if (!regex.hasMatch(value)) {
-    //   return 'Enter a valid email address';
-    // }
     return null;
   }
 
@@ -45,6 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Declare the loginProvider at the top of the build method
+    final loginProviderNotifier = ref.watch(loginProvider.notifier);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -57,16 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextComponent.headlineLarge('Masuk ke Akun Kamu'),
                 SizedBox(height: 4.h),
                 TextComponent.bodyMedium(
-                    "Masukkan email dan password kamu untuk mengakses seluruh fitur SummitUp",
-                    maxLines: 3),
+                  "Masukkan email dan password kamu untuk mengakses seluruh fitur SummitUp",
+                  maxLines: 3,
+                ),
                 SizedBox(height: 24.h),
-                TextComponent.bodyMedium("Username", color: TextColors.grey700),
+                TextComponent.bodyMedium("Email", color: TextColors.grey700),
                 SizedBox(height: 8.h),
                 TextFieldComponent(
-                  hintText: "Username",
+                  hintText: "Email",
                   icon: AppIcons.getIcon('user'),
                   validator: emailValidator,
-                  controller: _usernameController,
+                  controller: _emailController,
                 ),
                 SizedBox(height: 16.h),
                 TextComponent.bodyMedium("Password", color: TextColors.grey700),
@@ -83,10 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () {},
                     style: ButtonStyle(
-                      overlayColor:
-                      WidgetStateProperty.all(Colors.transparent),
+                      overlayColor: MaterialStateProperty.all(Colors.transparent),
                       alignment: Alignment.centerLeft,
-                      padding: WidgetStateProperty.all(EdgeInsets.zero),
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
                     ),
                     child: TextComponent.bodyMedium("Lupa password?"),
                   ),
@@ -96,7 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Masuk",
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // If the form is valid, proceed to login or whatever next step
+                      // Use loginProviderNotifier instead of loginProvider
+                      loginProviderNotifier.login(
+                        _emailController.text,
+                        _passwordController.text,
+                        context,
+                      );
                     }
                   },
                 ),
@@ -109,10 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {},
                       style: ButtonStyle(
-                        overlayColor:
-                        WidgetStateProperty.all(Colors.transparent),
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
                         alignment: Alignment.centerLeft,
-                        padding: WidgetStateProperty.all(EdgeInsets.zero),
+                        padding: MaterialStateProperty.all(EdgeInsets.zero),
                       ),
                       child: TextComponent.bodyMedium("Daftar"),
                     ),
