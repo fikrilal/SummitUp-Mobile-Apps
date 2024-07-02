@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 
 import '../../../_core/presentation/components/appbar/appbar_component.dart';
@@ -28,7 +29,7 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
 
     return Scaffold(
       appBar: const CustomAppBar(
-        title: "Detail Gunung",
+        title: "Detail Trip",
       ),
       body: SafeArea(
         child: Padding(
@@ -44,6 +45,15 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
   }
 
   Widget _buildContent(TripDetailsEntity tripDetails) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+
+    final formattedPrice = currencyFormatter.format(tripDetails.price);
+    final formattedRating = tripDetails.averageRating.toStringAsFixed(1);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +83,9 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
             ),
           ),
           SizedBox(height: 16.h),
-          TextComponent.titleLarge(tripDetails.tripName),
-          SizedBox(height: 8.h),
+          TextComponent.titleLarge(tripDetails.tripName,
+              fontWeight: FontWeight.w600),
+          SizedBox(height: 10.h),
           Row(
             children: [
               SvgPicture.asset(
@@ -84,7 +95,7 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
                 color: AppColors.successColor,
               ),
               SizedBox(width: 8.w),
-              TextComponent.bodySmall("3 hari"),
+              TextComponent.bodySmall("${tripDetails.duration} Hari"),
               SizedBox(width: 12.w),
               Container(
                 height: 12.h,
@@ -114,14 +125,15 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
                 color: AppColors.warningColor,
               ),
               SizedBox(width: 8.w),
-              TextComponent.bodySmall("4.6"),
+              TextComponent.bodySmall(
+                  "$formattedRating (${tripDetails.totalReviews})"),
             ],
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 10.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextComponent.titleMedium(tripDetails.price.toString(),
+              TextComponent.titleMedium(formattedPrice,
                   color: BrandColors.brandPrimary500),
               TextComponent.bodySmall("/orang")
             ],
@@ -157,23 +169,27 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
   }
 
   Widget _buildFacilitiesList(List<String> facilities) {
+    if (facilities.isEmpty) {
+      return TextComponent.bodyMedium("Trip ini tidak menyediakan fasilitas");
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: facilities
           .map((facility) => Padding(
-                padding: EdgeInsets.only(bottom: 8.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/shield_icon.svg',
-                      width: 20.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(width: 8.w),
-                    TextComponent.bodyMedium(facility)
-                  ],
-                ),
-              ))
+        padding: EdgeInsets.only(bottom: 8.w),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/shield_icon.svg',
+              width: 20.w,
+              height: 20.h,
+            ),
+            SizedBox(width: 8.w),
+            TextComponent.bodyMedium(facility)
+          ],
+        ),
+      ))
           .toList(),
     );
   }

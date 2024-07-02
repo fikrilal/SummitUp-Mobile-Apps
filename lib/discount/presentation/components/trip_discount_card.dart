@@ -54,7 +54,6 @@ class TripDiscountCard extends StatelessWidget {
 
     final formattedPrice = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(double.parse(price));
     final formattedDiscountPrice = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0).format(double.parse(discountPrice));
-    final formattedRating = double.parse(rating).toStringAsFixed(1);
 
     return Container(
       decoration: BoxDecoration(
@@ -130,7 +129,7 @@ class TripDiscountCard extends StatelessWidget {
                       color: TextColors.grey500,
                     ),
                     SizedBox(width: 8.w),
-                    TextComponent.bodySmall(formattedRating),
+                    TextComponent.bodySmall(rating),
                   ],
                 ),
                 SizedBox(height: 12.h),

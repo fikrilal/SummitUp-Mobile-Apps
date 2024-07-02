@@ -93,21 +93,21 @@ class TypographyStyles {
   static TextStyle get buttonPrimary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w600,
       color: Colors.white,
       height: 1);
 
   static TextStyle get buttonSecondary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w600,
       color: BrandColors.brandPrimary600,
       height: 1);
 
   static TextStyle get buttonTertiary => TextStyle(
       fontFamily: fontFamily,
       fontSize: AppTextSize.medium,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: TextColors.grey600,
       height: 1);
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
 import 'package:summitup_mobile_apps/discount/presentation/components/trip_discount_card.dart';
+import 'package:summitup_mobile_apps/discount/presentation/pages/trip_discount_screen.dart';
 import '../providers/trip_discount_list_providers.dart';
 
 class DiscountScreen extends ConsumerWidget {
@@ -27,26 +28,36 @@ class DiscountScreen extends ConsumerWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
                   SizedBox(height: 16.h),
-                  ...discountTrips
-                      .map((trip) => Column(
-                            children: [
-                              TripDiscountCard(
-                                title: trip.tripName,
-                                imageUrl: trip.imageUrl,
-                                duration: "${trip.duration} Hari",
-                                rating: trip.averageRating.toStringAsFixed(1),
-                                quota: "10 Orang",
-                                // This is a placeholder
-                                price: trip.price.toStringAsFixed(0),
-                                discountPrice:
-                                    trip.discountPrice.toStringAsFixed(0),
-                                tripId: trip.id,
-                                isLoading: false,
-                              ),
-                              SizedBox(height: 10.h),
-                            ],
-                          ))
-                      .toList(),
+                  ...discountTrips.map((trip) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                TripDiscountDetailsScreen(tripId: trip.id),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          TripDiscountCard(
+                            title: trip.tripName,
+                            imageUrl: trip.imageUrl,
+                            duration: "${trip.duration} Hari",
+                            rating:
+                                "${trip.averageRating.toStringAsFixed(1)} (${trip.totalReviews})",
+                            quota: "10 Orang",
+                            price: trip.price.toStringAsFixed(0),
+                            discountPrice:
+                                trip.discountPrice.toStringAsFixed(0),
+                            tripId: trip.id,
+                            isLoading: false,
+                          ),
+                          SizedBox(height: 10.h),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               );
             },

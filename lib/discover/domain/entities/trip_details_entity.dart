@@ -3,11 +3,13 @@ class TripDetailsEntity {
   final String tripName;
   final String description;
   final int price;
+  final int? discountPrice;  // Make this field nullable
   final int duration;
   final String startDate;
   final String endDate;
   final String imageUrl;
   final double averageRating;
+  final int totalReviews;
   final List<String> facilities;
 
   TripDetailsEntity({
@@ -15,11 +17,13 @@ class TripDetailsEntity {
     required this.tripName,
     required this.description,
     required this.price,
+    this.discountPrice,  // Initialize the nullable field
     required this.duration,
     required this.startDate,
     required this.endDate,
     required this.imageUrl,
     required this.averageRating,
+    required this.totalReviews,
     required this.facilities,
   });
 
@@ -29,12 +33,14 @@ class TripDetailsEntity {
       tripName: json['trip_name'] as String,
       description: json['description'] as String,
       price: json['price'] as int,
+      discountPrice: json['discount_price'] as int?,  // Handle nullable field
       duration: json['duration'] as int,
       startDate: json['start_date'] as String,
       endDate: json['end_date'] as String,
       imageUrl: json['image_url'] as String,
       averageRating: (json['average_rating'] as num).toDouble(),
-      facilities: List<String>.from(json['facilities'] as List<dynamic>),
+      totalReviews: json['total_reviews'] as int,
+      facilities: List<String>.from(json['facilities'] ?? []),
     );
   }
 }
