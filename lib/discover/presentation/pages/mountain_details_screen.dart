@@ -14,6 +14,7 @@ import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_de
 import '../components/equipment_rental_card.dart';
 import '../providers/equipment_by_mountain_providers.dart';
 import '../providers/trip_by_mountain_providers.dart';
+import 'equipment_details_screen.dart';
 
 class MountainDetailsScreen extends ConsumerWidget {
   final int mountainId;
@@ -195,29 +196,49 @@ class MountainDetailsScreen extends ConsumerWidget {
                       loading: () => CircularProgressIndicator(),
                       error: (error, _) => Text('Failed to load trips: $error'),
                     ),
+                    SizedBox(height: 24.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextComponent.titleMedium("Sewa Alat"),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            TextComponent.labelSmall("Semua",
+                                color: AppColors.linkColor),
+                            SizedBox(width: 2.w),
+                            SvgPicture.asset(
+                                'assets/icons/arrow_right_icon.svg',
+                                color: AppColors.linkColor)
+                          ],
+                        )
+                      ],
+                    ),
                     SizedBox(height: 16.h),
                     equipmentsAsyncValue.when(
                       data: (equipments) {
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: equipments
-                                .map((equipment) => GestureDetector(
+                            children: equipments.map((equipment) => GestureDetector(
                               onTap: () {
-                                // Handle onTap if needed
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EquipmentDetailsScreen(equipmentId: equipment.equipmentId),
+                                  ),
+                                );
                               },
                               child: Padding(
                                 padding: EdgeInsets.only(right: 12.w),
                                 child: EquipmentRentalCard(
                                   title: equipment.equipmentName,
-                                  imageUrl: "https://picsum.photos/1200",
+                                  imageUrl: equipment.imageUrl,
                                   price: "Rp ${equipment.pricePerDay}",
                                   rating: "4.5", // Dummy rating
                                   equipmentId: equipment.equipmentId,
                                 ),
                               ),
-                            ))
-                                .toList(),
+                            )).toList(),
                           ),
                         );
                       },

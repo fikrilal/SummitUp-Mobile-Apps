@@ -25,7 +25,7 @@ class EquipmentRentalCard extends StatelessWidget {
   });
 
   factory EquipmentRentalCard.loading() {
-    return EquipmentRentalCard(
+    return const EquipmentRentalCard(
       title: '',
       imageUrl: '',
       rating: '',

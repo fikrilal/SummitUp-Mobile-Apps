@@ -5,6 +5,7 @@ class Equipment {
   final int pricePerDay;
   final int mountainId;
   final int categoryId;
+  final String imageUrl;
 
   Equipment({
     required this.equipmentId,
@@ -13,6 +14,7 @@ class Equipment {
     required this.pricePerDay,
     required this.mountainId,
     required this.categoryId,
+    required this.imageUrl,
   });
 
   factory Equipment.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Equipment {
       pricePerDay: json['price_per_day'],
       mountainId: json['mountain_id'],
       categoryId: json['category_id'],
+      imageUrl: json['image_url'],
     );
   }
 }

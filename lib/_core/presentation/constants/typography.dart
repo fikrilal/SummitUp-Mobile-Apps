@@ -78,21 +78,21 @@ class TypographyStyles {
 
   static TextStyle get bodyMedium => TextStyle(
       fontFamily: fontFamily,
-      fontSize: AppTextSize.medium,
+      fontSize: AppTextSize.small,
       fontWeight: FontWeight.w400,
       color: TextColors.grey500,
       height: 1);
 
   static TextStyle get bodySmall => TextStyle(
       fontFamily: fontFamily,
-      fontSize: AppTextSize.xsmall,
+      fontSize: 13.sp,
       fontWeight: FontWeight.w400,
       color: TextColors.grey500,
       height: 1);
 
   static TextStyle get buttonPrimary => TextStyle(
       fontFamily: fontFamily,
-      fontSize: AppTextSize.medium,
+      fontSize: 14.sp,
       fontWeight: FontWeight.w600,
       color: Colors.white,
       height: 1);
