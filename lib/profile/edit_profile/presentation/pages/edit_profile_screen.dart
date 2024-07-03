@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
-import '../../../../_core/presentation/components/texts/component_text.dart';
-import '../components/edit_profile_button.dart';
-import '../components/edit_profile_textfield.dart';
-import '../../../_core/presentation/components/profile_image_component.dart';
-import '../components/gender_radio_button.dart';
+import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
+import 'package:summitup_mobile_apps/profile/_core/presentation/components/profile_image_component.dart';
+import 'package:summitup_mobile_apps/profile/edit_profile/presentation/components/edit_profile_button.dart';
+import 'package:summitup_mobile_apps/profile/edit_profile/presentation/components/edit_profile_textfield.dart';
+import 'package:summitup_mobile_apps/profile/edit_profile/presentation/components/gender_radio_button.dart';
 
-class EditProfileScreen extends StatefulWidget {
+import '../../../../_core/providers/user_providers.dart';
+import '../providers/update_profile_providers.dart';
+
+class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   String _selectedGender = "Laki-laki";
+  bool _dataLoaded = false;
 
   @override
   Widget build(BuildContext context) {
+    final userAsyncValue = ref.watch(userProvider);
+    final updateProfileNotifier = ref.watch(updateProfileProvider.notifier);
+    final isLoading = ref.watch(updateProfileProvider);
+
     return Scaffold(
       appBar: CustomAppBar(
         title: "Edit Profile",
@@ -35,40 +44,130 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Column(
-                    children: [
-                      ProfileImageComponent(
-                          imageUrl: 'https://picsum.photos/1000'),
-                      SizedBox(height: 16.h),
-                      EditProfileButton(
-                        onPressed: () {},
-                        text: "Ganti",
-                        iconPath: 'assets/icons/edit_icon.svg',
+                userAsyncValue.when(
+                  data: (user) {
+                    if (!_dataLoaded) {
+                      _nameController.text = user.fullname;
+                      _numberController.text = user.phoneNumber;
+                      _emailController.text = user.email;
+                      _dataLoaded = true;
+                    }
+                    return Center(
+                      child: Column(
+                        children: [
+                          ProfileImageComponent(imageUrl: user.profileImageUrl),
+                          SizedBox(height: 16.h),
+                          EditProfileButton(
+                            onPressed: () {},
+                            text: "Ganti",
+                            iconPath: 'assets/icons/edit_icon.svg',
+                          ),
+                        ],
                       ),
-                    ],
+                    );
+                  },
+                  loading: () => Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16.h),
+                        EditProfileButton(
+                          onPressed: () {},
+                          text: "Ganti",
+                          iconPath: 'assets/icons/edit_icon.svg',
+                        ),
+                      ],
+                    ),
+                  ),
+                  error: (error, _) => Center(
+                    child: Column(
+                      children: [
+                        ProfileImageComponent(
+                            imageUrl: 'https://picsum.photos/1000'),
+                        SizedBox(height: 16.h),
+                        EditProfileButton(
+                          onPressed: () {},
+                          text: "Ganti",
+                          iconPath: 'assets/icons/edit_icon.svg',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 32.h),
-                EditProfileTextField(
-                  label: "Nama",
-                  hintText: "Masukkan nama Anda",
-                  initialValue: "Alexander Kahfi Smith",
-                  controller: _nameController,
-                ),
-                SizedBox(height: 16.h),
-                EditProfileTextField(
-                  label: "No. Telp",
-                  hintText: "Masukkan no. telp. Anda",
-                  initialValue: "086162837244",
-                  controller: _numberController,
-                ),
-                SizedBox(height: 16.h),
-                EditProfileTextField(
-                  label: "Email",
-                  hintText: "Masukkan email Anda",
-                  initialValue: "kahfismith@gmail.com",
-                  controller: _emailController,
+                userAsyncValue.when(
+                  data: (user) => Column(
+                    children: [
+                      EditProfileTextField(
+                        label: "Nama",
+                        hintText: "Masukkan nama Anda",
+                        initialValue: _nameController.text,
+                        controller: _nameController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "No. Telp",
+                        hintText: "Masukkan no. telp. Anda",
+                        initialValue: _numberController.text,
+                        controller: _numberController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "Email",
+                        hintText: "Masukkan email Anda",
+                        initialValue: _emailController.text,
+                        controller: _emailController,
+                      ),
+                    ],
+                  ),
+                  loading: () => Column(
+                    children: [
+                      EditProfileTextField(
+                        label: "Nama",
+                        hintText: "Masukkan nama Anda",
+                        initialValue: "",
+                        controller: _nameController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "No. Telp",
+                        hintText: "Masukkan no. telp. Anda",
+                        initialValue: "",
+                        controller: _numberController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "Email",
+                        hintText: "Masukkan email Anda",
+                        initialValue: "",
+                        controller: _emailController,
+                      ),
+                    ],
+                  ),
+                  error: (error, _) => Column(
+                    children: [
+                      EditProfileTextField(
+                        label: "Nama",
+                        hintText: "Masukkan nama Anda",
+                        initialValue: "Error",
+                        controller: _nameController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "No. Telp",
+                        hintText: "Masukkan no. telp. Anda",
+                        initialValue: "Error",
+                        controller: _numberController,
+                      ),
+                      SizedBox(height: 16.h),
+                      EditProfileTextField(
+                        label: "Email",
+                        hintText: "Masukkan email Anda",
+                        initialValue: "Error",
+                        controller: _emailController,
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 16.h),
                 TextComponent.bodySmall("Gender"),
@@ -104,9 +203,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 SizedBox(height: 32.w),
                 ButtonComponent(
-                  text: "Simpan",
-                  onPressed: () {},
-                )
+                  text: isLoading ? "Loading..." : "Simpan",
+                  onPressed: isLoading
+                      ? () {}
+                      : () {
+                    final data = {
+                      'fullname': _nameController.text,
+                      'phone_number': _numberController.text,
+                      'email': _emailController.text,
+                      'gender': _selectedGender,
+                      'user_id': userAsyncValue.value?.id.toString() ?? '',
+                    };
+                    print("Button pressed with data: $data"); // Print data when button is pressed
+                    updateProfileNotifier.updateProfile(data, context);
+                  },
+                ),
+
               ],
             ),
           ),
@@ -118,6 +230,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _numberController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 }

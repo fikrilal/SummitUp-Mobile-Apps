@@ -53,6 +53,7 @@ class HomepageScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextComponent.titleMedium(user.fullname),
+                            SizedBox(height: 8.h),
                             TextComponent.bodySmall(
                                 "Mau pergi kemana hari ini?")
                           ],
