@@ -5,13 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/dashboard/presentation/components/quick_access_card.dart';
+import 'package:summitup_mobile_apps/discover/presentation/components/mountain_card.dart';
+import 'package:summitup_mobile_apps/discover/presentation/components/trip_card.dart';
+import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_details_screen.dart';
+import 'package:summitup_mobile_apps/discover/presentation/pages/trip_details_screen.dart';
+import 'package:summitup_mobile_apps/discover/presentation/providers/mountain_list_providers.dart';
+import 'package:summitup_mobile_apps/discover/presentation/providers/trip_by_mountain_providers.dart';
 
-import '../../../discover/presentation/components/mountain_card.dart';
-import '../../../discover/presentation/components/trip_card.dart';
-import '../../../discover/presentation/pages/mountain_details_screen.dart';
-import '../../../discover/presentation/pages/trip_details_screen.dart';
-import '../../../discover/presentation/providers/mountain_list_providers.dart';
-import '../../../discover/presentation/providers/trip_by_mountain_providers.dart';
+import '../../../_core/providers/user_providers.dart';
 
 class HomepageScreen extends ConsumerWidget {
   HomepageScreen({super.key});
@@ -27,6 +28,7 @@ class HomepageScreen extends ConsumerWidget {
     final int mountainId;
     final mountainListAsyncValue = ref.watch(mountainsProvider);
     final tripsAsyncValue = ref.watch(tripsProvider(mountainId = 1));
+    final userAsyncValue = ref.watch(userProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -34,25 +36,79 @@ class HomepageScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 24.w,
-                      backgroundImage:
-                          NetworkImage('https://picsum.photos/200'),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    SizedBox(width: 10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              userAsyncValue.when(
+                data: (user) {
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                    child: Row(
                       children: [
-                        TextComponent.titleMedium("Alexander Kahfi"),
-                        TextComponent.bodySmall("Mau pergi kemana hari ini?")
+                        CircleAvatar(
+                          radius: 24.w,
+                          backgroundImage: NetworkImage(user.profileImageUrl),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextComponent.titleMedium(user.fullname),
+                            TextComponent.bodySmall(
+                                "Mau pergi kemana hari ini?")
+                          ],
+                        ),
                       ],
                     ),
-                  ],
+                  );
+                },
+                loading: () => Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 24.w,
+                        backgroundColor: Colors.grey,
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100.w,
+                            height: 20.h,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 8.h),
+                          Container(
+                            width: 200.w,
+                            height: 20.h,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                error: (error, stack) => Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 24.w,
+                        backgroundColor: Colors.grey,
+                      ),
+                      SizedBox(width: 10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextComponent.titleMedium("Error"),
+                          TextComponent.bodySmall("Failed to load user data")
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               CarouselSlider(
@@ -174,38 +230,43 @@ class HomepageScreen extends ConsumerWidget {
                     TextComponent.bodySmall(
                         "Trip asik yang paling sering dibooking"),
                     SizedBox(height: 16.h),
-                tripsAsyncValue.when(
-                  data: (trips) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: trips.map((trip) => GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => TripDetailsScreen(tripId: trip.tripId),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(right: 12.w),
-                            child: TripCard(
-                              title: trip.tripName,
-                              imageUrl: trip.imageUrl,
-                              duration: "${trip.duration} Hari",
-                              rating: trip.averageRating.toStringAsFixed(1),
-                              price: "Rp ${trip.price}",
-                              tripId: trip.tripId,
-                            ),
+                    tripsAsyncValue.when(
+                      data: (trips) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: trips
+                                .map((trip) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                TripDetailsScreen(
+                                                    tripId: trip.tripId),
+                                          ),
+                                        );
+                                      },
+                                      child: Padding(
+                                        padding: EdgeInsets.only(right: 12.w),
+                                        child: TripCard(
+                                          title: trip.tripName,
+                                          imageUrl: trip.imageUrl,
+                                          duration: "${trip.duration} Hari",
+                                          rating: trip.averageRating
+                                              .toStringAsFixed(1),
+                                          price: "Rp ${trip.price}",
+                                          tripId: trip.tripId,
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
                           ),
-                        )).toList(),
-                      ),
-                    );
-                  },
-                  loading: () => CircularProgressIndicator(),
-                  error: (error, _) => Text('Failed to load trips: $error'),
-                ),
-                ],
+                        );
+                      },
+                      loading: () => CircularProgressIndicator(),
+                      error: (error, _) => Text('Failed to load trips: $error'),
+                    ),
+                  ],
                 ),
               ),
               Padding(

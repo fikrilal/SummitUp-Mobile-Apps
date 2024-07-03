@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:summitup_mobile_apps/dashboard/presentation/pages/homepage_screen.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../_core/presentation/pages/main_screen.dart';
 import '../../data/data_sources/login_api_service.dart';
-import '../../domain/repositories/login_repository.dart';
+import '../../data/repositories/login_repository.dart';
 
 final loginProvider = StateNotifierProvider<LoginNotifier, bool>((ref) {
   final apiService = LoginApiService();
@@ -18,15 +18,21 @@ class LoginNotifier extends StateNotifier<bool> {
 
   Future<void> login(String email, String password, BuildContext context) async {
     try {
-      state = true;
-      await repository.login(email, password);
-      state = false;
+      state = true;  // set loading state
+      final user = await repository.login(email, password);
+      state = false; // reset loading state
+
+      // Save login state and user data to shared preferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('user', user.toString()); // Save user data as needed
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomepageScreen()),
+        MaterialPageRoute(builder: (context) => MainScreen()),
       );
     } catch (e) {
-      state = false;
+      state = false;  // reset loading state
       _showErrorMessage(context, e.toString());
     }
   }
@@ -49,5 +55,14 @@ class LoginNotifier extends StateNotifier<bool> {
         );
       },
     );
+  }
+
+  // This can be called to log out the user
+  Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+    await prefs.remove('user');
+
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }

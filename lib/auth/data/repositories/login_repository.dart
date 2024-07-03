@@ -1,17 +1,18 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../data/data_sources/login_api_service.dart';
-import '../entities/user_entity.dart';
+import '../data_sources/login_api_service.dart';
+import '../../domain/entities/user_entity.dart';
 
 class LoginRepository {
   final LoginApiService apiService;
 
   LoginRepository(this.apiService);
 
-  Future<void> login(String email, String password) async {
+  Future<User> login(String email, String password) async {
     final response = await apiService.login(email, password);
     if (response['message'] == 'Login successful.') {
       final user = User.fromJson(response['user']);
       await _saveUserToSharedPreferences(user);
+      return user;
     } else {
       throw Exception(response['message']);
     }
@@ -27,3 +28,4 @@ class LoginRepository {
     prefs.setString('profile_image_url', user.profileImageUrl);
   }
 }
+
