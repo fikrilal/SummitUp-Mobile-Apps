@@ -9,6 +9,7 @@ import 'package:summitup_mobile_apps/_core/presentation/components/buttons/butto
 import '../../../_core/presentation/components/appbar/appbar_component.dart';
 import '../../../_core/presentation/components/texts/component_text.dart';
 import '../../../_core/presentation/constants/colors.dart';
+import '../../../payment/presentation/pages/payment_screen.dart';
 import '../../domain/entities/trip_details_entity.dart';
 import '../providers/trip_detail_providers.dart';
 
@@ -162,7 +163,17 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
             height: 1.5,
           ),
           SizedBox(height: 40.h),
-          ButtonComponent(text: "Booking Sekarang", onPressed: () {})
+          ButtonComponent(
+            text: "Booking Sekarang",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PaymentScreen(tripId: widget.tripId),
+                ),
+              );
+            },
+          )
         ],
       ),
     );
@@ -177,19 +188,19 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: facilities
           .map((facility) => Padding(
-        padding: EdgeInsets.only(bottom: 8.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/shield_icon.svg',
-              width: 20.w,
-              height: 20.h,
-            ),
-            SizedBox(width: 8.w),
-            TextComponent.bodyMedium(facility)
-          ],
-        ),
-      ))
+                padding: EdgeInsets.only(bottom: 8.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/shield_icon.svg',
+                      width: 20.w,
+                      height: 20.h,
+                    ),
+                    SizedBox(width: 8.w),
+                    TextComponent.bodyMedium(facility)
+                  ],
+                ),
+              ))
           .toList(),
     );
   }

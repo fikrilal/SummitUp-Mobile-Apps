@@ -12,17 +12,17 @@ import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../payment/presentation/providers/midtrans_providers.dart';
 import '../../providers/global_providers.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  late final MidtransSDK? _midtrans;
+class _MainScreenState extends ConsumerState<MainScreen> {
   final List<Widget> pages = [
     HomepageScreen(),
     MountainListScreen(),
@@ -33,44 +33,10 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _initSDK();
-  }
-
-  void _initSDK() async {
-    _midtrans = await MidtransSDK.init(
-      config: MidtransConfig(
-        clientKey: dotenv.env['MIDTRANS_CLIENT_KEY'] ?? "",
-        merchantBaseUrl: "",
-        colorTheme: ColorTheme(
-          colorPrimary: Colors.blue,
-          colorPrimaryDark: Colors.blue,
-          colorSecondary: Colors.blue,
-        ),
-      ),
-    );
-    _midtrans?.setUIKitCustomSetting(
-      skipCustomerDetailsPages: true,
-    );
-    _midtrans?.setTransactionFinishedCallback((result) {
-      _showToast('Transaction Completed', false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("Reading midtransInitProvider");
+      ref.read(midtransInitProvider);
     });
-  }
-
-  void _showToast(String msg, bool isError) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: isError ? Colors.red : Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
-  @override
-  void dispose() {
-    _midtrans?.removeTransactionFinishedCallback();
-    super.dispose();
   }
 
   @override
@@ -78,6 +44,13 @@ class _MainScreenState extends State<MainScreen> {
     return Consumer(
       builder: (context, ref, child) {
         final currentIndex = ref.watch(currentIndexProvider);
+        final midtrans = ref.watch(midtransInitProvider).asData?.value;
+
+        if (midtrans != null) {
+          print("Midtrans SDK initialized successfully");
+        } else {
+          print("Midtrans SDK is not initialized");
+        }
 
         return Scaffold(
           body: pages[currentIndex],
@@ -89,8 +62,10 @@ class _MainScreenState extends State<MainScreen> {
             ),
             child: BottomNavigationBar(
               currentIndex: currentIndex,
-              onTap: (index) =>
-                  ref.read(currentIndexProvider.notifier).state = index,
+              onTap: (index) {
+                print("Changing tab to index $index");
+                ref.read(currentIndexProvider.notifier).state = index;
+              },
               items: [
                 BottomNavigationBarItem(
                   backgroundColor: Colors.white,

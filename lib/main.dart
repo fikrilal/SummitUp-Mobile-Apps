@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:summitup_mobile_apps/_core/presentation/pages/main_screen.dart';
 import 'package:summitup_mobile_apps/auth/presentation/pages/login_screen.dart';
-import 'package:summitup_mobile_apps/dashboard/presentation/pages/homepage_screen.dart';
-import 'package:summitup_mobile_apps/discover/presentation/pages/mountain_list_screen.dart';
-import 'package:summitup_mobile_apps/payment/presentation/pages/payment_screen.dart';
-import 'package:summitup_mobile_apps/payment/presentation/pages/payment_success_screen.dart';
+
+import 'package:midtrans_sdk/midtrans_sdk.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +20,42 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
+      overrides: [
+        midtransProvider.overrideWithValue(await _initMidtrans()),
+      ],
       child: MyApp(
         initialRoute: isLoggedIn ? '/main' : '/login',
       ),
     ),
   );
+}
+
+Future<MidtransSDK> _initMidtrans() async {
+  final midtrans = await MidtransSDK.init(
+    config: MidtransConfig(
+      clientKey: dotenv.env['MIDTRANS_CLIENT_KEY'] ?? "",
+      merchantBaseUrl: "",
+      colorTheme: ColorTheme(
+        colorPrimary: Colors.blue,
+        colorPrimaryDark: Colors.blue,
+        colorSecondary: Colors.blue,
+      ),
+    ),
+  );
+  midtrans.setUIKitCustomSetting(
+    skipCustomerDetailsPages: true,
+  );
+  midtrans.setTransactionFinishedCallback((result) {
+    Fluttertoast.showToast(
+      msg: 'Transaction Completed',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  });
+  return midtrans;
 }
 
 class MyApp extends StatelessWidget {
@@ -49,3 +79,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+final midtransProvider = Provider<MidtransSDK>((ref) {
+  throw UnimplementedError();
+});
