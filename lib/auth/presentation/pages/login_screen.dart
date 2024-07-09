@@ -109,7 +109,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     TextComponent.bodyMedium("Belum punya akun?"),
                     SizedBox(width: 4.w),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
                       style: ButtonStyle(
                         overlayColor: MaterialStateProperty.all(Colors.transparent),
                         alignment: Alignment.centerLeft,

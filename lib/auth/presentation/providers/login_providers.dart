@@ -16,23 +16,21 @@ class LoginNotifier extends StateNotifier<bool> {
 
   LoginNotifier(this.repository) : super(false);
 
-  Future<void> login(String email, String password, BuildContext context) async {
+  Future<void> login(String email, String password,
+      BuildContext context) async {
     try {
-      state = true;  // set loading state
+      state = true;
       final user = await repository.login(email, password);
-      state = false; // reset loading state
-
-      // Save login state and user data to shared preferences
+      state = false;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('user', user.toString()); // Save user data as needed
-
+      await prefs.setString('user', user.toString());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainScreen()),
       );
     } catch (e) {
-      state = false;  // reset loading state
+      state = false;
       _showErrorMessage(context, e.toString());
     }
   }

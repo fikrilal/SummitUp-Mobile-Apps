@@ -7,19 +7,23 @@ abstract class ApiService {
 
   Future<dynamic> get(String endpoint) async {
     final response = await http.get(Uri.parse('$baseUrl/$endpoint'));
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load data'); 
-    }
+    print('GET $endpoint: ${response.statusCode} - ${response.body}');
+    return _processResponse(response);
   }
 
   Future<dynamic> post(String endpoint, Map<String, String> data) async {
     final response = await http.post(Uri.parse('$baseUrl/$endpoint'), body: data);
-    if (response.statusCode == 200) {
+    print('POST $endpoint: ${response.statusCode} - ${response.body}');
+    return _processResponse(response);
+  }
+
+  dynamic _processResponse(http.Response response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load data');
+      print('Failed with status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      throw Exception('Failed to load data (from api): ${response.body}');
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:summitup_mobile_apps/auth/presentation/pages/login_screen.dart';
 
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:summitup_mobile_apps/auth/presentation/pages/register_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           initialRoute: initialRoute,
           routes: {
+            '/register': (context) => const RegisterScreen(),
             '/login': (context) => const LoginScreen(),
             '/main': (context) => MainScreen(),
           },

@@ -63,7 +63,7 @@ class PinCodeInput extends StatelessWidget {
     this.activeColor = BrandColors.brandPrimary600,
     this.inactiveColor = TextColors.grey300,
     this.borderWidth = 1.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(100)),
+    this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   }) : super(key: key);
 
   @override
