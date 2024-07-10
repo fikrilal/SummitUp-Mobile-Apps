@@ -4,6 +4,7 @@ class User {
   final String email;
   final String fullname;
   final String phoneNumber;
+  final String gender;
   final String profileImageUrl;
 
   User({
@@ -12,6 +13,7 @@ class User {
     required this.email,
     required this.fullname,
     required this.phoneNumber,
+    required this.gender,
     required this.profileImageUrl,
   });
 
@@ -22,7 +24,9 @@ class User {
       email: json['email'],
       fullname: json['fullname'],
       phoneNumber: json['phone_number'],
-      profileImageUrl: json['profile_image_url'],
+      gender: json['gender'] ?? '',
+      profileImageUrl: json['profile_image_url'] ?? '',
     );
   }
 }
+

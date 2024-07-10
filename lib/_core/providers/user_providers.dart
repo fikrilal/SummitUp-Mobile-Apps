@@ -8,8 +8,9 @@ final userProvider = FutureProvider<User>((ref) async {
   final email = prefs.getString('email') ?? '';
   final fullname = prefs.getString('fullname') ?? '';
   final phoneNumber = prefs.getString('phone_number') ?? '';
+  final gender = prefs.getString('gender') ?? '';
   final profileImageUrl = prefs.getString('profile_image_url') ?? '';
-  return User(id, username, email, fullname, phoneNumber, profileImageUrl);
+  return User(id, username, email, fullname, phoneNumber, gender, profileImageUrl);
 });
 
 class User {
@@ -18,7 +19,8 @@ class User {
   final String email;
   final String fullname;
   final String phoneNumber;
+  final String gender;
   final String profileImageUrl;
 
-  User(this.id, this.username, this.email, this.fullname, this.phoneNumber, this.profileImageUrl);
+  User(this.id, this.username, this.email, this.fullname, this.phoneNumber, this.gender, this.profileImageUrl);
 }

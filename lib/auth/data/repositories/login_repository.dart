@@ -28,4 +28,3 @@ class LoginRepository {
     prefs.setString('profile_image_url', user.profileImageUrl);
   }
 }
-
