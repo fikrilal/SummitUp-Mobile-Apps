@@ -5,11 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
-
 import '../../../_core/presentation/components/appbar/appbar_component.dart';
 import '../../../_core/presentation/components/texts/component_text.dart';
 import '../../../_core/presentation/constants/colors.dart';
+import '../../../_core/providers/user_providers.dart';
 import '../../../payment/presentation/pages/payment_screen.dart';
+import '../../../payment/presentation/providers/create_booking_providers.dart';
 import '../../domain/entities/trip_details_entity.dart';
 import '../providers/trip_detail_providers.dart';
 
@@ -27,6 +28,7 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final tripDetailAsyncValue = ref.watch(tripDetailProvider(widget.tripId));
+    final userAsyncValue = ref.watch(userProvider);
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -36,7 +38,7 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
         child: Padding(
           padding: EdgeInsets.all(16.w),
           child: tripDetailAsyncValue.when(
-            data: (tripDetails) => _buildContent(tripDetails),
+            data: (tripDetails) => _buildContent(tripDetails, userAsyncValue),
             loading: () => Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err')),
           ),
@@ -45,7 +47,7 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
     );
   }
 
-  Widget _buildContent(TripDetailsEntity tripDetails) {
+  Widget _buildContent(TripDetailsEntity tripDetails, AsyncValue<User> userAsyncValue) {
     final NumberFormat currencyFormatter = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
@@ -165,15 +167,24 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
           SizedBox(height: 40.h),
           ButtonComponent(
             text: "Booking Sekarang",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PaymentScreen(tripId: widget.tripId),
-                ),
-              );
+            onPressed: () async {
+              if (userAsyncValue is AsyncData<User>) {
+                final user = userAsyncValue.value;
+                final createBookingNotifier = ref.read(createBookingProvider.notifier);
+                final expiredAt = DateTime.now().add(const Duration(hours: 1)).toString();
+
+                final bookingData = {
+                  'user_id': user.id.toString(),
+                  'trip_id': tripDetails.tripId.toString(),
+                  'expired_at': expiredAt,
+                };
+
+                createBookingNotifier.createBooking(bookingData, context);
+              } else {
+                _showErrorMessage(context, "User data not loaded.");
+              }
             },
-          )
+          ),
         ],
       ),
     );
@@ -188,20 +199,40 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: facilities
           .map((facility) => Padding(
-                padding: EdgeInsets.only(bottom: 8.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/icons/shield_icon.svg',
-                      width: 20.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(width: 8.w),
-                    TextComponent.bodyMedium(facility)
-                  ],
-                ),
-              ))
+        padding: EdgeInsets.only(bottom: 8.w),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/shield_icon.svg',
+              width: 20.w,
+              height: 20.h,
+            ),
+            SizedBox(width: 8.w),
+            TextComponent.bodyMedium(facility)
+          ],
+        ),
+      ))
           .toList(),
+    );
+  }
+
+  void _showErrorMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
