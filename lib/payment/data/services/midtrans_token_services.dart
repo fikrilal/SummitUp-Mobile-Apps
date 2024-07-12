@@ -11,15 +11,43 @@ class TokenService {
     required String productName,
     required int price,
     required int quantity,
+    required int bookingId,
+    required int userId,
   }) async {
     var apiUrl = dotenv.env['BASE_URL'] ?? '';
+    var apiTransaction = dotenv.env['API_URL'] ?? '';
 
-    // Payload
+    // Create transaction record in the backend
+    final transactionData = {
+      'id': DateTime.now().millisecondsSinceEpoch.toString(),
+      'booking_id': bookingId.toString(),
+      'user_id': userId.toString(),
+      'amount': price.toString(),
+    };
+
+    var createTransactionApiUrl = '$apiTransaction/create_booking_transaction.php';
+    var transactionResponse = await http.post(
+      Uri.parse(createTransactionApiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(transactionData),
+    );
+
+    if (transactionResponse.statusCode != 201) {
+      return left(ServerFailure(
+        data: transactionResponse.body,
+        code: transactionResponse.statusCode,
+        message: 'Failed to create transaction record',
+      ));
+    }
+
+    // Payload for Midtrans
     var payload = {
-      "id": DateTime.now().millisecondsSinceEpoch, // Unique Id
+      "id": transactionData['id'], // Use the same Unique ID
       "productName": productName,
       "price": price,
-      "quantity": quantity
+      "quantity": quantity,
     };
 
     var payloadJson = jsonEncode(payload);
@@ -39,7 +67,7 @@ class TokenService {
         print("Response: $jsonResponse"); // Print response for debugging
         return right(TokenModel(token: jsonResponse['token']));
       } else {
-        print("Failed to get token: ${response.body}");
+        print("(token service) Failed to get token: ${response.body}");
         return left(ServerFailure(
             data: response.body,
             code: response.statusCode,

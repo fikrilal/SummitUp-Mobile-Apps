@@ -179,7 +179,21 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
                   'expired_at': expiredAt,
                 };
 
-                createBookingNotifier.createBooking(bookingData, context);
+                final bookingId = await createBookingNotifier.createBooking(bookingData, context);
+
+                if (bookingId != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentScreen(
+                        tripId: widget.tripId,
+                        bookingId: bookingId,
+                      ),
+                    ),
+                  );
+                } else {
+                  _showErrorMessage(context, "Failed to create booking.");
+                }
               } else {
                 _showErrorMessage(context, "User data not loaded.");
               }
@@ -236,3 +250,4 @@ class _TripDetailsScreenState extends ConsumerState<TripDetailsScreen> {
     );
   }
 }
+

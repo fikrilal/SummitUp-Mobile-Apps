@@ -10,17 +10,19 @@ import 'package:summitup_mobile_apps/_core/presentation/components/image/cached_
 import '../../../_core/presentation/components/appbar/appbar_component.dart';
 import '../../../_core/presentation/components/texts/component_text.dart';
 import '../../../_core/presentation/constants/colors.dart';
+import '../../../_core/providers/user_providers.dart';
 import '../../../discover/domain/entities/trip_details_entity.dart';
 import '../../../discover/presentation/providers/trip_detail_providers.dart';
 import '../components/payment_overview_card.dart';
 import '../components/trip_overview_card.dart';
 import '../providers/token_providers.dart';
-import '../../../main.dart'; // Import main.dart to access midtransProvider
+import '../../../main.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
   final int tripId;
+  final int bookingId;
 
-  const PaymentScreen({super.key, required this.tripId});
+  const PaymentScreen({super.key, required this.tripId, required this.bookingId});
 
   @override
   ConsumerState<PaymentScreen> createState() => _PaymentScreenState();
@@ -30,6 +32,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     final tripDetailAsyncValue = ref.watch(tripDetailProvider(widget.tripId));
+    final userAsyncValue = ref.watch(userProvider);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -40,7 +43,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
         child: Padding(
           padding: EdgeInsets.all(16.w),
           child: tripDetailAsyncValue.when(
-            data: (tripDetails) => _buildContent(tripDetails),
+            data: (tripDetails) => _buildContent(tripDetails, userAsyncValue),
             loading: () => Center(child: CircularProgressIndicator()),
             error: (err, stack) => Center(child: Text('Error: $err')),
           ),
@@ -49,7 +52,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     );
   }
 
-  Widget _buildContent(TripDetailsEntity tripDetails) {
+  Widget _buildContent(TripDetailsEntity tripDetails, AsyncValue<User> userAsyncValue) {
     final NumberFormat currencyFormatter = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
@@ -128,51 +131,78 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
             text: "Bayar Sekarang",
             onPressed: () async {
               print("Button 'Bayar Sekarang' pressed");
-              final tokenService = ref.read(tokenServiceProvider);
-              final result = await tokenService.getToken(
-                productName: tripDetails.tripName,
-                price: totalPembayaran,
-                quantity: 1,
-              );
+              if (userAsyncValue is AsyncData<User>) {
+                final user = userAsyncValue.value;
+                final tokenService = ref.read(tokenServiceProvider);
+                final result = await tokenService.getToken(
+                  productName: tripDetails.tripName,
+                  price: totalPembayaran,
+                  quantity: 1,
+                  bookingId: widget.bookingId,
+                  userId: user.id,
+                );
 
-              result.fold(
-                (failure) {
-                  print("Failed to get token: ${failure.message}");
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: Text(failure.message),
-                        actions: [
-                          TextButton(
-                            child: const Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                (token) {
-                  print("Token received: ${token.token}");
-                  final midtrans = ref.read(midtransProvider);
-                  if (midtrans != null) {
-                    print("Starting Midtrans payment flow");
-                    midtrans.startPaymentUiFlow(
-                      token: token.token,
+                result.fold(
+                      (failure) {
+                    print("(payment screen) Failed to get token: ${failure.message}");
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content: Text(failure.message),
+                          actions: [
+                            TextButton(
+                              child: const Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
-                  } else {
-                    print("Midtrans is not initialized");
-                  }
-                },
-              );
+                  },
+                      (token) {
+                    print("Token received: ${token.token}");
+                    final midtrans = ref.read(midtransProvider);
+                    if (midtrans != null) {
+                      print("Starting Midtrans payment flow");
+                      midtrans.startPaymentUiFlow(
+                        token: token.token,
+                      );
+                    } else {
+                      print("Midtrans is not initialized");
+                    }
+                  },
+                );
+              } else {
+                _showErrorMessage(context, "User data not loaded.");
+              }
             },
           ),
         ],
       ),
+    );
+  }
+
+  void _showErrorMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

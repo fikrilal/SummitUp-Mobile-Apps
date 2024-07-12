@@ -10,15 +10,16 @@ class CreateBookingNotifier extends StateNotifier<bool> {
 
   CreateBookingNotifier(this.repository) : super(false);
 
-  Future<void> createBooking(Map<String, String> data, BuildContext context) async {
+  Future<int?> createBooking(Map<String, String> bookingData, BuildContext context) async {
     try {
       state = true;
-      final bookingId = await repository.createBooking(data);
+      final bookingId = await repository.createBooking(bookingData);
       state = false;
-      Navigator.pop(context, bookingId); // Go back to the previous screen and pass the booking ID
+      return bookingId;
     } catch (e) {
       state = false;
       _showErrorMessage(context, e.toString());
+      return null;
     }
   }
 
