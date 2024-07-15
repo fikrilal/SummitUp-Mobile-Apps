@@ -18,11 +18,12 @@ class TokenService {
     var apiTransaction = dotenv.env['API_URL'] ?? '';
 
     // Create transaction record in the backend
+    final transactionId = DateTime.now().millisecondsSinceEpoch;
     final transactionData = {
-      'id': DateTime.now().millisecondsSinceEpoch.toString(),
-      'booking_id': bookingId.toString(),
-      'user_id': userId.toString(),
-      'amount': price.toString(),
+      'id': transactionId,
+      'booking_id': bookingId,
+      'user_id': userId,
+      'amount': price,
     };
 
     var createTransactionApiUrl = '$apiTransaction/create_booking_transaction.php';
@@ -44,7 +45,7 @@ class TokenService {
 
     // Payload for Midtrans
     var payload = {
-      "id": transactionData['id'], // Use the same Unique ID
+      "id": transactionId, // Use the same Unique ID
       "productName": productName,
       "price": price,
       "quantity": quantity,
@@ -65,7 +66,7 @@ class TokenService {
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         print("Response: $jsonResponse"); // Print response for debugging
-        return right(TokenModel(token: jsonResponse['token']));
+        return right(TokenModel(token: jsonResponse['token'], id: transactionId));
       } else {
         print("(token service) Failed to get token: ${response.body}");
         return left(ServerFailure(
