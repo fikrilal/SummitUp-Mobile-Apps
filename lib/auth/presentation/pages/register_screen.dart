@@ -71,20 +71,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           controller: _usernameController,
                         ),
                         SizedBox(height: 16.h),
-                        TextComponent.bodyMedium("Password", color: TextColors.grey700),
-                        SizedBox(height: 8.h),
-                        TextFieldComponent(
-                          hintText: "Password",
-                          icon: AppIcons.getIcon('password'),
-                          controller: _passwordController,
-                        ),
-                        SizedBox(height: 16.h),
                         TextComponent.bodyMedium("Phone Number", color: TextColors.grey700),
                         SizedBox(height: 8.h),
                         TextFieldComponent(
                           hintText: "Phone Number",
                           icon: AppIcons.getIcon('phone'),
                           controller: _phoneController,
+                        ),
+                        SizedBox(height: 16.h),
+                        TextComponent.bodyMedium("Password", color: TextColors.grey700),
+                        SizedBox(height: 8.h),
+                        TextFieldComponent(
+                          hintText: "Password",
+                          icon: AppIcons.getIcon('password'),
+                          controller: _passwordController,
                         ),
                         SizedBox(height: 32.h),
                         ButtonComponent(

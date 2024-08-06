@@ -4,7 +4,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="summitup_mobile_apps"
+        android:label="SummitUp"
         android:theme="@style/AppTheme"
         tools:replace="android:label"> <!-- Atur tema default di sini -->
 
