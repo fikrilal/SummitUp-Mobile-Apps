@@ -6,6 +6,7 @@ import 'package:summitup_mobile_apps/profile/favorite/presentation/components/tr
 
 import '../../../../_core/presentation/components/appbar/appbar_component.dart';
 import '../../../../_core/providers/user_providers.dart';
+import '../../../../discover/presentation/pages/trip_details_screen.dart';
 import '../providers/favourite_trips_provider.dart';
 
 
@@ -37,7 +38,13 @@ class FavoriteScreen extends ConsumerWidget {
                       ...favouriteTrips.map((trip) {
                         return GestureDetector(
                           onTap: () {
-                            // Handle trip card tap
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TripDetailsScreen(
+                                        tripId: trip.tripId),
+                              ),
+                            );
                           },
                           child: Column(
                             children: [

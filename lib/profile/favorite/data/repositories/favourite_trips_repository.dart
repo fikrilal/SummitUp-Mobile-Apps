@@ -3,12 +3,18 @@ import '../data_sources/favorite_trips_api_service.dart';
 
 abstract class FavouriteTripRepository {
   Future<List<FavouriteTrip>> getFavouriteTrips(int userId);
+  Future<void> deleteFavouriteTrip(int favouriteId);
 }
 
 class FavouriteTripRepositoryImpl implements FavouriteTripRepository {
   final FavouriteTripsApiService apiService;
 
   FavouriteTripRepositoryImpl(this.apiService);
+
+  @override
+  Future<void> deleteFavouriteTrip(int favouriteId) async {
+    await apiService.deleteFavouriteTrip(favouriteId);
+  }
 
   @override
   Future<List<FavouriteTrip>> getFavouriteTrips(int userId) async {

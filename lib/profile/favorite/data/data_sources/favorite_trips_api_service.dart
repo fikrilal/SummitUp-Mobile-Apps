@@ -11,4 +11,12 @@ class FavouriteTripsApiService extends ApiService {
       throw Exception('Failed to load favourite trips');
     }
   }
+
+  Future<void> deleteFavouriteTrip(int favouriteId) async {
+    final response =
+        await http.delete(Uri.parse('$baseUrl/delete_favourite_trip.php?favourite_id=$favouriteId'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete favourite trip');
+    }
+  }
 }
