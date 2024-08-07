@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,15 +5,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:summitup_mobile_apps/_core/presentation/pages/main_screen.dart';
 import 'package:summitup_mobile_apps/auth/presentation/pages/login_screen.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:midtrans_sdk/midtrans_sdk.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:summitup_mobile_apps/auth/presentation/pages/register_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(); // Load environment variables
-
+  await dotenv.load();
+  await initializeDateFormatting('id_ID', null);
   final prefs = await SharedPreferences.getInstance();
   final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
