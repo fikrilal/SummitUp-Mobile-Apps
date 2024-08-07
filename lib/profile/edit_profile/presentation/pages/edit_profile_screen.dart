@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/buttons/button_component.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
@@ -10,6 +13,7 @@ import 'package:summitup_mobile_apps/profile/edit_profile/presentation/component
 import 'package:summitup_mobile_apps/profile/edit_profile/presentation/components/gender_radio_button.dart';
 
 import '../../../../_core/providers/user_providers.dart';
+import '../../data/data_sources/upload_image_api_service.dart';
 import '../providers/update_profile_providers.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -25,6 +29,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final TextEditingController _emailController = TextEditingController();
   String _selectedGender = "Laki-laki";
   bool _dataLoaded = false;
+  File? _selectedImage;
+
+  Future<void> _pickImage() async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      setState(() {
+        if (pickedFile != null) {
+          _selectedImage = File(pickedFile.path);
+        } else {
+          print('No image selected.');
+        }
+      });
+    } catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<void> _uploadImage(int userId) async {
+    if (_selectedImage != null) {
+      await uploadImage(_selectedImage!, userId);
+    } else {
+      print('No image to upload.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +83,17 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     return Center(
                       child: Column(
                         children: [
-                          ProfileImageComponent(imageUrl: user.profileImageUrl),
+                          ProfileImageComponent(
+                            imageUrl: user.profileImageUrl,
+                          ),
                           SizedBox(height: 16.h),
                           EditProfileButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _pickImage();
+                              if (_selectedImage != null) {
+                                await _uploadImage(user.id);
+                              }
+                            },
                             text: "Ganti",
                             iconPath: 'assets/icons/edit_icon.svg',
                           ),

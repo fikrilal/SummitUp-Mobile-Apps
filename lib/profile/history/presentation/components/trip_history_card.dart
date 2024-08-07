@@ -101,12 +101,12 @@ class TripHistoryCard extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextComponent.titleMedium(
                 price,
                 color: BrandColors.brandPrimary500,
               ),
-              Spacer(),
               OutlinedButton(
                 onPressed: onTap,
                 style: OutlinedButton.styleFrom(
