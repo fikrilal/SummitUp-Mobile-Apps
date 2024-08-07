@@ -9,6 +9,7 @@ final favouriteTripsApiServiceProvider = Provider((ref) => FavouriteTripsApiServ
 final favouriteTripRepositoryProvider = Provider((ref) => FavouriteTripRepositoryImpl(ref.watch(favouriteTripsApiServiceProvider)));
 final getFavouriteTripsProvider = Provider((ref) => GetFavouriteTrips(ref.watch(favouriteTripRepositoryProvider)));
 final deleteFavouriteTripProvider = Provider((ref) => DeleteFavouriteTrip(ref.watch(favouriteTripRepositoryProvider)));
+final addFavouriteTripProvider = Provider((ref) => AddFavouriteTrip(ref.watch(favouriteTripRepositoryProvider)));
 
 final favouriteTripsProvider = FutureProvider.family<List<FavouriteTrip>, int>((ref, userId) {
   return ref.watch(getFavouriteTripsProvider).call(userId);

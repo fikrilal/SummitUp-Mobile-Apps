@@ -36,13 +36,12 @@ class FavoriteScreen extends ConsumerWidget {
                     children: [
                       SizedBox(height: 16.h),
                       ...favouriteTrips.map((trip) {
+                        final isFavourite = favouriteTrips.any((favTrip) => favTrip.tripId == trip.tripId);
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    TripDetailsScreen(
-                                        tripId: trip.tripId),
+                                builder: (context) => TripDetailsScreen(tripId: trip.tripId),
                               ),
                             );
                           },
@@ -56,6 +55,16 @@ class FavoriteScreen extends ConsumerWidget {
                                 quota: "10 Orang",
                                 price: trip.price.toStringAsFixed(0),
                                 tripId: trip.tripId,
+                                isFavourite: isFavourite,
+                                onTapBookmark: () async {
+                                  if (isFavourite) {
+                                    final favouriteTrip = favouriteTrips.firstWhere((favTrip) => favTrip.tripId == trip.tripId);
+                                    await ref.read(deleteFavouriteTripProvider).call(favouriteTrip.favouriteId);
+                                  } else {
+                                    await ref.read(addFavouriteTripProvider).call(user.id, trip.tripId);
+                                  }
+                                  ref.refresh(favouriteTripsProvider(user.id)); // Refresh the list
+                                },
                                 isLoading: false,
                               ),
                               SizedBox(height: 10.h),

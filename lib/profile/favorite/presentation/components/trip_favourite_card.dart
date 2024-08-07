@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/texts/component_text.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class TripFavouriteCard extends StatelessWidget {
   final String title;
@@ -17,9 +18,11 @@ class TripFavouriteCard extends StatelessWidget {
   final String price;
   final int tripId;
   final bool isLoading;
+  final bool isFavourite;
+  final VoidCallback onTapBookmark;
 
   const TripFavouriteCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.imageUrl,
     required this.duration,
@@ -28,7 +31,9 @@ class TripFavouriteCard extends StatelessWidget {
     required this.price,
     required this.tripId,
     this.isLoading = false,
-  });
+    required this.isFavourite,
+    required this.onTapBookmark,
+  }) : super(key: key);
 
   factory TripFavouriteCard.loading() {
     return TripFavouriteCard(
@@ -40,6 +45,8 @@ class TripFavouriteCard extends StatelessWidget {
       price: '',
       tripId: 0,
       isLoading: true,
+      isFavourite: false,
+      onTapBookmark: () {},
     );
   }
 
@@ -141,7 +148,17 @@ class TripFavouriteCard extends StatelessWidget {
                         TextComponent.bodySmall("/orang"),
                       ],
                     ),
-                    Icon(Icons.bookmark)
+                    ZoomTapAnimation(
+                      child: InkWell(
+                        enableFeedback: true,
+                        onTap: onTapBookmark,
+                        child: Icon(
+                          isFavourite ? Icons.bookmark : Icons.bookmark_border,
+                          color: isFavourite ? Colors.red : Colors.grey,
+                          size: 20.w,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

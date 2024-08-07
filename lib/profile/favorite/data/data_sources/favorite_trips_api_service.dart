@@ -19,4 +19,15 @@ class FavouriteTripsApiService extends ApiService {
       throw Exception('Failed to delete favourite trip');
     }
   }
+
+  Future<void> addFavouriteTrip(int userId, int tripId) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/add_favourite_trip.php'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'user_id': userId, 'trip_id': tripId}),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add favourite trip');
+    }
+  }
 }

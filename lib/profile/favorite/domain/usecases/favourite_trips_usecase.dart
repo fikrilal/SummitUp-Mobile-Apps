@@ -20,3 +20,13 @@ class DeleteFavouriteTrip {
     return repository.deleteFavouriteTrip(favouriteId);
   }
 }
+
+class AddFavouriteTrip {
+  final FavouriteTripRepository repository;
+
+  AddFavouriteTrip(this.repository);
+
+  Future<void> call(int userId, int tripId) {
+    return repository.addFavouriteTrip(userId, tripId);
+  }
+}
