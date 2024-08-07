@@ -11,4 +11,14 @@ class TransactionApiService extends ApiService {
       throw Exception('Failed to load transaction history');
     }
   }
+
+  Future<Map<String, dynamic>> fetchTransactionDetails(int transactionId) async {
+    final response = await http.get(Uri.parse('$baseUrl/get_transaction_details.php?transaction_id=$transactionId'));
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load transaction details');
+    }
+  }
 }

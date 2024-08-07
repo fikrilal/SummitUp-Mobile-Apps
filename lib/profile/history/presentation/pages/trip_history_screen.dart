@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:summitup_mobile_apps/_core/presentation/components/appbar/appbar_component.dart';
+import 'package:summitup_mobile_apps/profile/history/presentation/pages/transaction_details.dart';
 import '../../../../_core/providers/user_providers.dart';
 import '../components/trip_history_card.dart';
 import 'package:summitup_mobile_apps/_core/presentation/constants/colors.dart';
@@ -42,7 +43,13 @@ class TripHistoryScreen extends ConsumerWidget {
                           group: "${transaction.totalReviews} Orang",
                           price: "Rp${transaction.amount.toStringAsFixed(0)}",
                           onTap: () {
-                            // Handle button tap, e.g., navigate to trip detail
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TransactionDetails(
+                                  transactionId: transaction.transactionId,
+                                ),
+                              ),
+                            );
                           },
                         ),
                         SizedBox(height: 8.h),

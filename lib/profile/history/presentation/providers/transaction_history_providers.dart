@@ -9,7 +9,13 @@ final transactionRepositoryProvider =
     Provider((ref) => TransactionRepositoryImpl(ref.watch(transactionApiServiceProvider)));
 final getTransactionHistoryProvider =
     Provider((ref) => GetTransactionHistory(ref.watch(transactionRepositoryProvider)));
+final getTransactionDetailsProvider =
+    Provider((ref) => GetTransactionDetails(ref.watch(transactionRepositoryProvider)));
 
 final transactionHistoryProvider = FutureProvider.family<List<Transaction>, int>((ref, userId) {
   return ref.watch(getTransactionHistoryProvider).call(userId);
+});
+
+final transactionDetailsProvider = FutureProvider.family<Transaction, int>((ref, transactionId) {
+  return ref.watch(getTransactionDetailsProvider).call(transactionId);
 });

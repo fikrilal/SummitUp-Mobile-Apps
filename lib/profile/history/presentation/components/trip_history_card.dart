@@ -120,7 +120,7 @@ class TripHistoryCard extends StatelessWidget {
                   ),
                 ),
                 child: TextComponent.bodyMedium(
-                  "Beri Ulasan",
+                  "Llihat Detail",
                   color: BrandColors.brandPrimary500,
                   fontWeight: FontWeight.w500,
                 ),

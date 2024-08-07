@@ -10,3 +10,13 @@ class GetTransactionHistory {
     return repository.getTransactionHistory(userId);
   }
 }
+
+class GetTransactionDetails {
+  final TransactionRepository repository;
+
+  GetTransactionDetails(this.repository);
+
+  Future<Transaction> call(int transactionId) {
+    return repository.getTransactionDetails(transactionId);
+  }
+}
